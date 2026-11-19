@@ -52,6 +52,13 @@ the user-actionable invite refusals (`invite-*`, `proof-*`, `credential-invalid`
 
 The only custom numeric codes outside the standard `-327xx` range are `-32005` (Conflict), `-32001` (Unauthorized, local-only guard / `/invite` endpoint), `-32003` (Forbidden, multiplayer capability refusal), `-32010` (Oversized response), `-32011` (Server overloaded), and prepared `-32012` (Daemon not ready / startup failed); other server-specific conditions (e.g. "not a delegated agent", "path outside workspace", "staging `.` is blocked") are reported as `-32602`/`-32603` with a descriptive `message`. Notification-shaped requests (no `id`) never receive an error response except for parse/invalid-request failures detected before the notification status is known.
 
+Experimental `vcs.subscribe` / `work.subscribe` can also refuse with `-32010`,
+`message: "Read model exceeds the capture budget"` and
+`data: { code: "read-model-budget-unavailable" }`. The server checks the pinned
+projection's row count and UTF-8 byte size before loading it. No partial snapshot
+or advanced cursor is returned; a paged snapshot is required. This is distinct
+from the serialization-time `oversized-response` backstop above.
+
 ### 9.1 Clone failure taxonomy (`workspace.create`)
 
 A failed clone/provisioning step in `workspace.create` (§5.1 clone orchestration) is classified into a typed error instead of a generic internal error (monorepo#826). The envelope is always:
