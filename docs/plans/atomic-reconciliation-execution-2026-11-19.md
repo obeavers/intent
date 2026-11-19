@@ -1,3 +1,60 @@
+> Current integration direction — own forks' main branches (19 November 2026)
+>
+> The implementation baseline is obeavers/intent, obeavers/intentd and
+> obeavers/cloudlands-fe. Upstream contribution is outside this consolidation.
+> The user clarified that these forks' main branches should contain the work so
+> the restructured plan can continue. Earlier unpublished/main-merge restrictions
+> below are dated history; the runtime, qualification and release gates remain.
+
+The protocol merge is caff6599ea9090a976df0dc041642f7f07e3b504 in
+obeavers/intent main. Component main now includes backend
+85e5348ef1c053c864546f3c01beacfac37847eb and frontend
+bed06ac2a33ff47546044d3828ca5d2e6da2115c. This aggregate consolidation pins those
+exact commits and routes its public submodules to those same forks. Active
+integration clones use the own fork as origin and retain intent-hq as upstream;
+the original dirty checkout and its worker source remain preserved.
+
+The newer backend main's Postgres migration 0007_delete_purge.sql is preserved.
+The unpublished tracer migration is now 0008_tracer_evidence.sql; SQLite remains
+0197. A new Store test checks that original task/admission evidence survives the
+new workspace-deletion path. Fork consumer checks and notifications now use the
+own aggregate repository. Immutable upstream fixture provenance and existing
+release-owner guards remain unchanged; no workflow activation or deployment is
+part of consolidation.
+
+Current selected checks include Store ledger 11, Postgres-feature units 13,
+Store Postgres-enabled strict Clippy, production opt-in CLI typechecking, metadata
+14 + 32, backend native-routing 68, frontend focused tests 152 and workflow-policy
+10. The pin readiness helper resolves the fork owner and passes its existing
+Bash suites. The consumer isolation fixture now supplies trusted Python as well
+as Node, preserving the two Atomic guards and all existing Node assertions.
+Recorded older binary hashes and broader validation cohorts below retain their
+original source identity; they are not relabeled as new qualification.
+
+The backend event-stream recovery fixture now adopts the already merged canonical
+source ae48c764 with its truthful upstream repository provenance. Only the fixture's
+top-level shipped-static-examples annotation and its lock metadata changed; all 31
+scenarios, 9 request-validation cases and 191 V1 JSON expectations are unchanged.
+Both consumers now lock the same canonical source. The canonical 8 Node tests and
+strict verification of both copies pass.
+
+Final aggregate verification passes all 20 consumer checks against these own-fork
+component commits, including the repaired shared fixture parity. The delivery-map
+guard retains all 361 definitions, and its 26 mutation tests pass. The trusted
+interpreter fixture and fork pin helper pass on Bash 5 and stock Bash 3.2; the
+changed root workflow passes actionlint. These are local integration receipts,
+not a claim that full CI, live Postgres or actual provider execution passed.
+
+Full release-script/workflow gates retain recorded inherited or environment
+failures. Full real-provider T1 acceptance still requires an execution profile
+that permits local IPC; live Postgres and the other transport/platform gates are
+open. Consolidating the code into development main does not qualify T1, activate
+ordinary Atomic source authority or close T2–T5/POST. All 361 protected definitions
+remain assigned in the delivery map. Final remote-main verification and current
+check receipts are recorded in the own-fork consolidation receipt.
+
+---
+
 # Atomic reconciliation execution journal — 19 November 2026
 
 This is the current execution record for the [reconciliation plan](atomic-reconciliation-plan-2026-11-18.md),
