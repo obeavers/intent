@@ -57,8 +57,8 @@ main's daemon eade125 / frontend f4a8646 pins; no component pointer was advanced
 
 | Repository | Integration baseline | Local committed slices | Remaining local source |
 |---|---|---|---|
-| intent | ae48c76413d68e8c63a3e517e2be23b50453dd1c | 43c81c67 additive Atomic protocol contracts; also retained on integrate/atomic-contracts | R1 plan, coverage guard, inventory, checkpoint tool and this documentation are a separate root slice. Planned/historical path provenance is corrected; all 20 root consumer checks pass. |
-| intentd | 643f8621c9587f58536a53ebdaab1b4046236473 | 13dbb7a rooted Git contracts/compatibility fixtures; f9e81c3 inert native host and recorded Git query client; a4c5187 minimum paired Store ledger; 2d0e4cb B4/T1 Services, admission/recording, transport refusals and CLI | Clean after local source commit 2d0e4cbe5c5b156a4933c5b75874aed20e49af97 (32 files; 5291 insertions, 47 deletions). Final transport/lint/affected-test receipts remain pending; real T1 acceptance is blocked. |
+| intent | ae48c76413d68e8c63a3e517e2be23b50453dd1c | 43c81c67 additive Atomic protocol contracts, also retained on integrate/atomic-contracts; 6644cc5c governing plan, complete requirement map, reconciliation tooling and documentation | R1 is locally committed at 6644cc5c7fd7abc5ba3f22f774666bd291d3af09, with a clean tree before this journal follow-up. All 20 root consumer checks pass; component gitlinks remain unchanged. |
+| intentd | 643f8621c9587f58536a53ebdaab1b4046236473 | 13dbb7a rooted Git contracts/compatibility fixtures; f9e81c3 inert native host/query client; a4c5187 paired Store ledger; 2d0e4cb B4/T1 Services/admission/recording/transport/CLI; bf13654 strict source-lint conventions | Clean at bf136549d4a83785ab3e7f34a649f2be8013078d. B4 commit 2d0e4cbe5c5b156a4933c5b75874aed20e49af97 contains 32 files / 5291 insertions / 47 deletions. Final affected tests, transport refusals, selected all-target strict Clippy, core/Services source lints and delivery CLI build/help pass. The daemon caller-binding source-lint receipt remains pending. Real T1 acceptance is blocked. |
 | cloudlands-fe | f4a8646408491d6ecb13384c0da0ad83474f3d38 | 39c25a96a reconciles gated Atomic workflows with version 2.355.0 main | Clean after this local commit; full application/platform acceptance remains open. |
 
 No GitHub push, PR or merge has occurred. An attempted push was rejected by automatic
@@ -74,9 +74,9 @@ the normal component-pin workflow remain later operations.
 | B1: core/Git and compatibility source | Typed VCS/work/knowledge contracts, rooted Git operations and fixture bootstrap; recovered the V1 worker's 191 original JSON goldens, coverage document and real 1,522-line UDS harness. | JSON expected outputs were retained. The harness was subsequently formatted; not all 193 current files are byte-identical. Original-baseline provenance and real compatibility execution remain open. |
 | B2: minimum Store | SQLite migration 0197 and paired Postgres 0007; work_t1_evidence and work_t1_agent_fence; immutable original TaskRevision, atomic confirmed-agent insertion, first admission, cancellation/replay, Git contribution and blob references; main's root-incarnation counter rejects ABA. | This is the minimum T1 ledger, not the old 19-migration relational graph. Later native/review/memory modules must adapt to it or supply reviewed migrations. Old SQL references to task_revision/work_binding tables cannot be copied unchanged. Evidence/fences are excluded from transfer. Real Postgres execution remains unrun. |
 | B3: host/query | Independent Rust 1.98 host pinned to Atomic bf9893adb57dccbaa8f7e14277e02d060d74bf53, protocol 3; inert supervision/client and actual recorded Git import/query closure. | Normal startup remains inactive. Admitted runtime targets are macOS ARM64/x64 and Linux x64 GNU/musl. Linux aarch64 is not runtime-qualified by helper tooling or earlier x64 Docker receipts. |
-| B4: real source admission and recording | Locally committed in 2d0e4cb. Retains the exact task source before provider admission; original private idle-event carrier; physical Git effect observed before awaiting; finite settlement ownership preserves receipts through cancellation; retained replay refuses duplicate commits. | Current-source transport/affected tests and strict lint gates must finish before this slice can be called accepted. Older artifacts and incomplete historical test runs are diagnostic evidence only. |
+| B4: real source admission and recording | Locally committed in 2d0e4cb, with source-lint follow-up bf13654. Retains the exact task source before provider admission; original private idle-event carrier; physical Git effect observed before awaiting; finite settlement ownership preserves receipts through cancellation; retained replay refuses duplicate commits. | Final affected recording/admission/tracer and transport-refusal tests pass. Strict lint gates and actual tracer acceptance remain required. Older artifacts and incomplete historical test runs are diagnostic evidence only. |
 | T1 controller, association and report | Guarded new output directories; held directory/database identity; normal app composition and MCP bridge; one actual configured provider, fixed fees fixture, real Node test against the recorded commit, positive native query, dirty sentinel exclusion, restart/reprepare and no duplicate admission/contribution. | Actual provider/host acceptance has not passed. Services must become idle before reopen. The feature is explicitly opt-in and absent from ordinary CLI builds. |
-| Task-planning transport | No taskPlanning wire capability is advertised. Any present expectedTaskRevision, including null, is refused before allocation; stale agentId rejection keeps priority. | New planning/refusal tests and normal transport gates are required. This does not advertise an unfinished capability. |
+| Task-planning transport | No taskPlanning wire capability is advertised. Any present expectedTaskRevision, including null, is refused before allocation; stale agentId rejection keeps priority. | Six planning and four transport-refusal tests pass. This does not advertise an unfinished capability or establish broader platform acceptance. |
 
 The T1 fixture requires feeCents(1234,500) to equal 62, changes only src/fees.js and
 retains the fixed test/package. Its association is owned by Intent. Atomic truthfully
@@ -104,7 +104,7 @@ The first build used the isolated Cargo home and target directory recorded in
 (259448064 bytes). All 419 daemon source file versions matched the pre-build
 integration checkpoint; its --help exited 0.
 
-The latest built artifact after the footer fix is
+The intermediate built artifact after the footer fix had path
 .reconciliation/build/tracer-cli-target/debug/atomic-tracer, SHA256
 3d112e8f0c02634b55115f73047811e5f49301f8df2bc7a59f632c940f33cdaa
 (259448032 bytes). Its source manifest SHA256 is
@@ -113,7 +113,19 @@ All 2849 recorded source file versions were unchanged during build and verificat
 Build and --help both exited 0; receipts/logs are
 .reconciliation/evidence/reconnect-cli-final-{build,help}.{json,log}.
 
-The current actual configured-provider/native-host attempt was:
+The final delivery build from clean committed backend bf136549 also passed, in
+approximately 22 seconds, and its --help exited 0. The binary at the same build
+path now has SHA256
+adc1bfdb8fe9738ae2fb58dd4d74042b609522a93c880e8174fc77b0580bf1ee
+(259448032 bytes). All 2850 source file versions remained unchanged, with source
+manifest SHA256 a25144ec8face77f936c54cc60179938759d30d577d015f73faa445c5f2de408.
+Receipts/logs: .reconciliation/evidence/reconnect-cli-delivery-{build,help}.{json,log}.
+This artifact was built after the nonsemantic lint corrections; no real scenario
+was run with it. The retained real attempts below used their own earlier recorded
+source/binary cohorts and remain failed.
+
+The latest actual configured-provider/native-host attempt used the intermediate
+footer-fixed binary with SHA256 3d112e8f… and this command:
 
 ```sh
 /Users/oliverbeavers/CodeRepositories/intent/.reconciliation/build/tracer-cli-target/debug/atomic-tracer \
@@ -158,12 +170,17 @@ caveats; later edits require checks appropriate to those edits.
 | Root plan | All 361 definitions retained; mutation suite 26 passed. | Traceability only; no completion inference. |
 | Root consumer checks | After the provenance correction below, make consumer-checks exited 0: all 20 checks pass against pristine eade125/f4a8646 component pins. Log .reconciliation/logs/reconnect-root-consumer-checks.log. | No component-pin advance or runtime qualification. |
 | Frontend | Renderer/main/preload TypeScript, Svelte zero errors, knip, main-test type baseline, localization and package-script checks passed; focused lifecycle and captured IPC-audit cohorts passed separately. | Full fallback run failed and was terminated, exit 130. Six failures were observed: two integration defects were fixed/retested; four environment process/warning probes remain. No full-suite, CT, Electron or WSS acceptance claim. |
-| Current tracer Services | cargo test -p intent-services --lib atomic_tracer --offline --message-format=short -- --test-threads=1: 13 passed / 0 failed before the footer fix, and 13 passed after it. Logs .reconciliation/logs/reconnect-tracer-services-tests.log and reconnect-tracer-final.log; post-fix exit 0 in reconnect-focused-tests.json. | A later test-timeout helper correction requires its own affected rerun. |
+| Current tracer Services | cargo test -p intent-services --lib atomic_tracer --offline --message-format=short -- --test-threads=1: 13 passed before the footer fix, 13 after it and 13 in the final-source affected rerun. Final log .reconciliation/logs/reconnect-tracer-source-final.log; complete exit-0 receipt .reconciliation/evidence/reconnect-final-source-tests.json. | Repeated cohorts are not additive acceptance. Final run includes the corrected footer, scaled helper and bf13654 test-module organization. |
 | Historical recording execution | Prior log compiled in 5m19s, began 64 tests and retained only a partial pass list; no final result. | Not a cohort pass. Old process/session identifiers are stale after reconnection. |
 | Older-artifact diagnosis | Five original_recording and two work_admission tests passed individually on the older already-built artifact. Logs .reconciliation/logs/reconnect-older-artifact-{original-recording,work-admission}-diagnostic.log. | Diagnostic only; not final-source acceptance or completion of the interrupted 64-test run. |
-| Fresh B4/planning/future size | Bounded Cargo runs exited 0 with original_recording 5, work_admission 2, work_planning 6 and future_size 1 passed. Commands and log hashes: .reconciliation/evidence/reconnect-focused-tests.json. | Telemetry-disabled runs have complete exit receipts. They are separate cohorts, not broad suite acceptance. |
+| Fresh B4/planning/future size | Bounded Cargo runs exited 0 with original_recording 5, work_admission 2, work_planning 6 and future_size 1 passed. Final-source affected reruns again pass recording 5 and admission 2. Commands/log hashes: .reconciliation/evidence/reconnect-focused-tests.json and reconnect-final-source-tests.json. | Telemetry-disabled runs have complete exit receipts. They are separate/repeated cohorts, not broad suite acceptance. |
 | Broader auto_commit rerun | Its output reached 64 passed in 28.47 seconds, but the runner's completion polling was rejected after unexpected PostHog telemetry appeared. | No complete runner exit receipt; retain this partial log as diagnostic evidence rather than promote it to qualification. The narrower recording rerun above has a complete exit-0 receipt. |
-| Fresh transport/lint | Four transport refusals and strict Clippy are running. The fixed Node test is classified accurately for source-lint discovery; caller-binding markers, the scaled test-timeout helper and the CLI statement formatting are corrected in 2d0e4cb. | The first strict-Clippy attempt found the CLI statement formatting issue; its rerun and affected-test results remain required. Record actual exit receipts before promoting these gates. |
+| Fresh transport refusals | cargo test -p intent-transport --lib task_planning_rejection --offline --message-format=short -- --test-threads=1 exited 0: four passed. Log .reconciliation/logs/reconnect-planning-rejection.log and focused-test receipt. | Focused negative-route evidence. |
+| Core source lints | Four source-lint targets passed: fixed_deadline_lint 17, full_literal_lint 19, test_helper_track_caller_lint 16, test_target_registration_lint 6. Receipt .reconciliation/evidence/reconnect-final-core-source-lints.json. | Exact command and complete exit-0 receipt retained. |
+| Services source lints | Provider-spawn and note-write path suites passed: seven tests. Receipt .reconciliation/evidence/reconnect-final-services-source-lints.json and its .log. | Complete exit-0 receipt retained; no provider was admitted by these static checks. |
+| Final strict Clippy | cargo clippy -p intent-services -p intent-transport -p intentd --all-targets --features atomic-tracer --offline --message-format=short -- -D warnings exited 0 in 3m03s. Log .reconciliation/logs/reconnect-services-cli-clippy-final.log. | Checks selected package targets and their dependency closure, not an independently run full workspace gate. Four existing vendored pprof warnings remain dependency warnings; selected application targets pass with warnings denied. |
+| Final delivery CLI | Final committed-source build and help both exited 0, with 2850 file hashes unchanged. Receipts .reconciliation/evidence/reconnect-cli-delivery-{build,help}.json. | No real-run claim for this binary; earlier actual attempts failed before provider admission. |
+| Daemon caller-binding source lint | The final daemon caller-binding suite is still compiling/running. Node test classification, caller markers, scaled timeout, CLI formatting and test-module layout are corrected in 2d0e4cb/bf13654. | Retain its complete exit receipt before promoting this last local source-lint gate. |
 | Real T1 | Actual binary and host attempt failed before provider admission as recorded above. | Must rerun on an admitted execution profile with permitted local IPC and ordinary provider prerequisites. |
 
 ## R1 documentation provenance correction
@@ -208,14 +225,14 @@ not changed.
 
 ## Next acceptance sequence
 
-1. Finish current-source transport, affected-test and strict lint results for backend
-   commit 2d0e4cb; fix any remaining failures and record complete exit receipts.
-2. Finish affected current-source tracer tests for the report-footer correction;
-   retain both built-artifact identities and both failed real runs.
+1. Finish the daemon caller-binding source-lint receipt for backend bf13654; fix
+   any remaining failure and retain its complete exit result.
+2. Preserve the final committed source and its validation receipts alongside the
+   original worker checkpoint; retain both built-artifact identities and failed runs.
 3. Run the real tracer on an admitted profile with working local IPC and normal
    provider authentication; retain real query, fixed-test, restart and replay evidence.
    A build, help output or failed setup cannot substitute for this run.
-4. Review/commit the root docs whose consumer gates now pass, and preserve final
+4. Retain the final journal follow-up to root R1 commit 6644cc5c, and preserve
    source/evidence before authorized publication. Review component
    integration and normal pin updates without overlaying the original feature trees.
 5. Progress through T2–T5/POST with explicit schema adaptation and each original gate.
