@@ -223,6 +223,11 @@ CHECK_APP_GUIDE_SOURCES_UPSTREAM ?=
 check-app-guide-sources: ensure-intentd-submodule ensure-fe-submodule ## Check that the assistant app guide's Sources comments are well formed in the checked-out guide and cite files present at the pinned components (CHECK_APP_GUIDE_SOURCES_UPSTREAM=1 reads checkout HEADs and warns for cloudlands-fe)
 	@node scripts/check-app-guide-sources.mjs $(if $(filter 1,$(CHECK_APP_GUIDE_SOURCES_UPSTREAM)),--upstream)
 
+.PHONY: check-atomic-delivery-plan
+check-atomic-delivery-plan: ## Verify complete Atomic tracer-plan coverage and retained qualification requirements
+	@python3 -I -B -S scripts/test-check-atomic-delivery-plan.py
+	@python3 -I -B -S scripts/check-atomic-delivery-plan.py
+
 check-doc-links: ## Check agent-facing Markdown links, paths, and heading anchors (CI: repo-hygiene without submodules, docs-check with the component pins)
 	@node --test scripts/check-doc-links.test.mjs
 	@node scripts/check-doc-links.mjs
@@ -276,7 +281,7 @@ check-protocol-status-labels: ensure-intentd-submodule ## Check that docs/protoc
 # check-doc-links is a prerequisite so a local docs-check gives the answer of
 # the ci.yml docs-check job's doc link check before a push (PR #8244 passed
 # locally, then failed CI on placeholder paths read as real ones).
-docs-check: event-catalog-check check-mcp-bindings check-protocol-fixture-tests check-protocol-status-labels check-doc-links ## Check documented development targets, knobs, remote-host guidance, doc links, protocol-doc line lengths, protocol table cell counts, every protocol fixture test, and protocol status labels against the pinned intentd capabilities
+docs-check: event-catalog-check check-mcp-bindings check-protocol-fixture-tests check-protocol-status-labels check-doc-links check-atomic-delivery-plan ## Check documented development targets, knobs, remote-host guidance, doc links, protocol-doc line lengths, protocol table cell counts, every protocol fixture test, protocol status labels, and Atomic delivery coverage against the pinned intentd capabilities
 	@scripts/docs-check.sh
 	@node scripts/check-doc-line-length.mjs
 	@node --test scripts/check-doc-line-length.test.mjs

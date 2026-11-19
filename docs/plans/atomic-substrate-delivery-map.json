@@ -1,0 +1,3740 @@
+{
+  "schemaVersion": 1,
+  "governingPlan": "docs/plans/atomic-substrate-adoption-2026-11-12.md",
+  "checkpointDate": "2026-11-15",
+  "mappingSemantics": "W stage owns full completion; A/Q stage owns resolution; V stage owns full verification; D/named-clause stage owns enforcement accountability. All safety invariants apply whenever their effects are exercised, including earlier tracer subsets. Stage acceptance does not close every mapped W/V item.",
+  "statusSemantics": "Snapshot of existing ledger labels, not a fresh audit or automatic readiness promotion. The status ledger and exact receipts remain authoritative.",
+  "retainedIds": [
+    "A1",
+    "A10",
+    "A11",
+    "A12",
+    "A13",
+    "A14",
+    "A15",
+    "A16",
+    "A17",
+    "A18",
+    "A19",
+    "A2",
+    "A20",
+    "A21",
+    "A22",
+    "A23",
+    "A24",
+    "A25",
+    "A26",
+    "A27",
+    "A28",
+    "A29",
+    "A3",
+    "A30",
+    "A31",
+    "A32",
+    "A33",
+    "A34",
+    "A35",
+    "A36",
+    "A37",
+    "A38",
+    "A39",
+    "A4",
+    "A40",
+    "A5",
+    "A6",
+    "A7",
+    "A8",
+    "A9",
+    "ADO-1",
+    "ADO-2",
+    "ADO-3",
+    "ADO-4",
+    "ADO-5",
+    "AGT-1",
+    "AGT-2",
+    "AGT-3",
+    "BAR-1",
+    "BAR-2",
+    "BAR-3",
+    "BAR-4",
+    "BASE-1",
+    "BASE-2",
+    "BASE-3",
+    "BASE-4",
+    "BIND-1",
+    "BIND-2",
+    "BIND-3",
+    "BIND-4",
+    "BIND-5",
+    "CHILD-1",
+    "CHILD-2",
+    "CHILD-3",
+    "CHILD-4",
+    "CHILD-5",
+    "CKP-1",
+    "CKP-10",
+    "CKP-11",
+    "CKP-2",
+    "CKP-3",
+    "CKP-4",
+    "CKP-5",
+    "CKP-6",
+    "CKP-7",
+    "CKP-8",
+    "CKP-9",
+    "CMP-1",
+    "CMP-2",
+    "CMP-3",
+    "CMP-4",
+    "CMP-5",
+    "CMP-6",
+    "CMP-7",
+    "CONF-1",
+    "CONF-2",
+    "CONF-3",
+    "CONF-4",
+    "CONF-5",
+    "CONF-6",
+    "CONF-7",
+    "CONF-8",
+    "D1",
+    "D10",
+    "D11",
+    "D12",
+    "D13",
+    "D14",
+    "D15",
+    "D16",
+    "D17",
+    "D18",
+    "D19",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6",
+    "D7",
+    "D8",
+    "D9",
+    "EVD-1",
+    "EVD-2",
+    "EVD-3",
+    "EVD-4",
+    "EXP-1",
+    "EXP-2",
+    "EXP-3",
+    "EXT-1",
+    "EXT-2",
+    "EXT-3",
+    "HOST-1",
+    "HOST-10",
+    "HOST-11",
+    "HOST-12",
+    "HOST-2",
+    "HOST-3",
+    "HOST-4",
+    "HOST-5",
+    "HOST-6",
+    "HOST-7",
+    "HOST-8",
+    "HOST-9",
+    "IND-1",
+    "IND-2",
+    "IND-3",
+    "IND-4",
+    "IND-5",
+    "INT-1",
+    "INT-10",
+    "INT-2",
+    "INT-3",
+    "INT-4",
+    "INT-5",
+    "INT-6",
+    "INT-7",
+    "INT-8",
+    "INT-9",
+    "KNOW-1",
+    "KNOW-2",
+    "KNOW-3",
+    "KNOW-4",
+    "KNOW-5",
+    "KNOW-6",
+    "KNOW-7",
+    "KNOW-8",
+    "KNOW-9",
+    "LAT-1",
+    "LAT-10",
+    "LAT-11",
+    "LAT-12",
+    "LAT-13",
+    "LAT-2",
+    "LAT-3",
+    "LAT-4",
+    "LAT-5",
+    "LAT-6",
+    "LAT-7",
+    "LAT-8",
+    "LAT-9",
+    "MAN-1",
+    "MAN-2",
+    "MAN-3",
+    "MAN-4",
+    "MEM-1",
+    "MEM-2",
+    "MEM-3",
+    "MEM-4",
+    "MEM-5",
+    "MEM-6",
+    "OP-1",
+    "OP-2",
+    "OP-3",
+    "OP-4",
+    "OP-5",
+    "OUT-1",
+    "OUT-2",
+    "OUT-3",
+    "OUT-4",
+    "OUT-5",
+    "PRJ-1",
+    "PRJ-2",
+    "PRJ-3",
+    "PRJ-4",
+    "PRJ-5",
+    "PRJ-6",
+    "PROV-1",
+    "PROV-2",
+    "PROV-3",
+    "PROV-4",
+    "PROV-5",
+    "PUB-1",
+    "PUB-2",
+    "PUB-3",
+    "PUB-4",
+    "PUB-5",
+    "PUB-6",
+    "Q1",
+    "Q2",
+    "Q3",
+    "Q4",
+    "Q5",
+    "Q6",
+    "Q7",
+    "Q8",
+    "READ-1",
+    "READ-2",
+    "READ-3",
+    "READ-4",
+    "READ-5",
+    "READ-6",
+    "REC-1",
+    "REC-10",
+    "REC-11",
+    "REC-2",
+    "REC-3",
+    "REC-4",
+    "REC-5",
+    "REC-6",
+    "REC-7",
+    "REC-8",
+    "REC-9",
+    "REV-1",
+    "REV-2",
+    "REV-3",
+    "RWD-1",
+    "RWD-2",
+    "SAFE-1",
+    "SAFE-2",
+    "SAFE-3",
+    "SAFE-4",
+    "SEL-1",
+    "SEL-2",
+    "SEL-3",
+    "SEL-4",
+    "SEL-5",
+    "SET-1",
+    "SET-2",
+    "SET-3",
+    "SKL-1",
+    "SKL-2",
+    "SKL-3",
+    "SKL-4",
+    "SKL-5",
+    "STORE-1",
+    "STORE-2",
+    "STORE-3",
+    "STORE-4",
+    "STORE-5",
+    "STORE-6",
+    "TASK-1",
+    "TASK-2",
+    "TASK-3",
+    "TASK-4",
+    "TRI-1",
+    "TRI-2",
+    "TRI-3",
+    "TRI-4",
+    "TRI-5",
+    "TRI-6",
+    "USE-1",
+    "USE-2",
+    "USE-3",
+    "USE-4",
+    "V1",
+    "V10",
+    "V11",
+    "V12",
+    "V13",
+    "V14",
+    "V15",
+    "V16",
+    "V17",
+    "V18",
+    "V19",
+    "V2",
+    "V20",
+    "V21",
+    "V22",
+    "V23",
+    "V24",
+    "V25",
+    "V26",
+    "V27",
+    "V28",
+    "V29",
+    "V3",
+    "V30",
+    "V31",
+    "V32",
+    "V33",
+    "V34",
+    "V35",
+    "V36",
+    "V37",
+    "V38",
+    "V39",
+    "V4",
+    "V40",
+    "V41",
+    "V42",
+    "V43",
+    "V44",
+    "V45",
+    "V5",
+    "V6",
+    "V7",
+    "V8",
+    "V9",
+    "W01",
+    "W02",
+    "W03",
+    "W04",
+    "W05",
+    "W06",
+    "W07",
+    "W08",
+    "W09",
+    "W10",
+    "W11",
+    "W12",
+    "W13",
+    "W14",
+    "W15",
+    "W16",
+    "W17",
+    "W18",
+    "W19",
+    "W20",
+    "W21",
+    "W22",
+    "W23",
+    "W24",
+    "W25",
+    "W26",
+    "W27",
+    "W28",
+    "W29",
+    "W30",
+    "W31",
+    "W32",
+    "W33",
+    "W34",
+    "W35",
+    "W36",
+    "W37",
+    "W38",
+    "W39",
+    "W40",
+    "W41",
+    "W42"
+  ],
+  "retainedIdSetSha256": "a86103e40dd697903b7b7c0b3932fe2057dd4aae6eca2273b89fc04bf13cab0a",
+  "stages": [
+    {
+      "id": "T1",
+      "name": "Connected Git-to-Atomic tracer",
+      "dependsOn": [],
+      "profile": "disposable Git-authoritative developer fixture",
+      "fullCompletionWorkItems": [
+        "W02",
+        "W03",
+        "W04",
+        "W15"
+      ]
+    },
+    {
+      "id": "T2",
+      "name": "Native-writing tracer",
+      "dependsOn": [
+        "T1"
+      ],
+      "profile": "disposable qualified native execution profile",
+      "fullCompletionWorkItems": [
+        "W08",
+        "W09",
+        "W16",
+        "W20",
+        "W21",
+        "W22",
+        "W23",
+        "W24"
+      ]
+    },
+    {
+      "id": "T3",
+      "name": "Acceptance and recovery loop",
+      "dependsOn": [
+        "T2"
+      ],
+      "profile": "private Git-first then native review/adoption fixtures",
+      "fullCompletionWorkItems": [
+        "W10",
+        "W11",
+        "W27",
+        "W28",
+        "W31"
+      ]
+    },
+    {
+      "id": "T4",
+      "name": "Parallel workflow",
+      "dependsOn": [
+        "T3"
+      ],
+      "profile": "bounded qualified multi-agent fixture",
+      "fullCompletionWorkItems": [
+        "W18",
+        "W19",
+        "W25",
+        "W33",
+        "W40",
+        "W41"
+      ]
+    },
+    {
+      "id": "T5",
+      "name": "Daily-use qualification and pilot",
+      "dependsOn": [
+        "T4"
+      ],
+      "profile": "complete release/dogfood qualification",
+      "fullCompletionWorkItems": [
+        "W01",
+        "W05",
+        "W06",
+        "W07",
+        "W12",
+        "W13",
+        "W14",
+        "W17",
+        "W26",
+        "W29",
+        "W30",
+        "W32",
+        "W34",
+        "W35",
+        "W38",
+        "W39",
+        "W42"
+      ]
+    },
+    {
+      "id": "POST",
+      "name": "Further increments and retirement",
+      "dependsOn": [
+        "T5"
+      ],
+      "profile": "separately planned post-pilot expansion",
+      "fullCompletionWorkItems": [
+        "W36",
+        "W37"
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "D1",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "b0ae3456981fededa4f4145a05e70c35f90678ffde93e7c97eebe94eae1327f8",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D2",
+      "stage": "T1",
+      "disposition": "preserved",
+      "definitionSha256": "9e779241ea2ca28c028af251570a2d9ef36c914088396b645283ea896a1c93ba",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "3e6ac53a0983512e078315d00539f7a592cd19ebf2ee1cb856c6bf95d53b030c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "46908ce60fb41d47cdad939d688d07837290c78bdb8682a21ea24bc1469641c8",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "5a8bd3ddf6e3c3cc7aafa5f7f84173a12e095f0386f8226aafa8118b39580a53",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "d9a37bcd5a5eced78a3cdbae4368043db0a171a3a6f635dec4facf8d58e7d3cd",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D7",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "e5d380cd8fafb72d79e4ff00e60b57aa5f03665c316c798bdac5c5ebd362abe3",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D8",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "4cf4990ef7aa1719d7069a22b70c31966ee25c9d64813aa07da40ee115b51536",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D9",
+      "stage": "T1",
+      "disposition": "preserved",
+      "definitionSha256": "33aeda9c0c4d8244682c6847e5ddd683b09e553038ead01c008461a0377546b9",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D10",
+      "stage": "T1",
+      "disposition": "preserved",
+      "definitionSha256": "9e5de41301016aa7ca12503d5a49cbdcbe5873e6f225ab43685bee10aab64187",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D11",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "0e9ef0f3a4b89bb27f12a47bbdf0d6b126db7c384db417cc9eaa9d5b971e10cd",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D12",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "17fea4900524927f5c0376921b618857bb1def67b55e632151b87cb7570e2723",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D13",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "1361fbea6a700985e718b636cd31bcdfc82ad1fbd2d7e30ef54a767293007374",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D14",
+      "stage": "POST",
+      "disposition": "preserved",
+      "definitionSha256": "41a04c26747ff553cdff2d0909ad9b35acf1bd05f709e88258dc09690c2a8e65",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D15",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "5616ce2d2e0077e31dc2222f31f9a25ca17dcbca03c79b1b73996ccc8307f0fc",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D16",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "d914d3bc71c9ea8053398cd8189430ecab3bf33490f693b53ba66a11f531b615",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D17",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "9232107db11b8c1e720995537e6568234f1d4f04e1056f2f9d92766ea2aafe9a",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D18",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "c329cea2ae31af31af6efe63186b9f3dc77f642a87615f0ccd869e2c5f650c77",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "D19",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "a7572f053ff08d2d2c2c2407a3dda5a7873eb0689e5c1b98379ebdca939daa47",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "c8646450f009096b2474e66e4212ffec41cf987cc6050ffa17ea7eb139bfdaa7",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "2c94df0005f6043aa78f1037ac55b4a2e482c9172a8044b86f011134ef5d8d3b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "fdf8461dbe91e9c5952706944309afca573cabc2ed3c86ca27592b98a9af4029",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "7fee881e7c7bdff9d53549d3a504674f3fcec6ea0eb9b7ec57524749495dde3f",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "bf6c0642595c89d3c406d938e634a40eda9253148ef187c9deef9504fa956f25",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "c89ca71a6337702f0e595544fc269ead54d166aa64d8eae36a29dc0556762f9a",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-7",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "bdd27eba8f59384e0ada9a77645fb1911e36e494a63975da99f7c1dfcc5ad440",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-8",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "5400e4fe97f76f4ae42b23e873e39a26265f5fcbbafe5db53c744ff7432c3a62",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-9",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "db7b716c8a8f72bb9f4113790c3756386f83aa8d7d9bada283b8cee2ccfd2d6a",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-10",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "fce53a909a56a3e684c48da2fe0ff515f0de4e912134c0efce2cae2d68e4bc53",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-11",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "ec26a73160e3c92b1bf4d46ddfb8998d3186068a6e432869640140bee83694fe",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "HOST-12",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "f800354c3ed11dce3a1f399ca983f8958c790407eec6f2351a027836533ca50f",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MAN-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "ce2186b30649b52f6b288b71e658bf206350c07f6951f4e4673b75071aca4f79",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MAN-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "c82be38a41fbfe8823bcd176fa1e4a5b3859dfbdbe58ca72179cb017be260b3e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MAN-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "b7af71ac4f1cc32a56da7ba1e400cdb930d7be3be95f2ec4f0ae5bc608b4c953",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MAN-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "43708a1a55df51070ae7012c592ec5a847439c18504f1279b90b84df2eadbc10",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OP-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "5e72d68abe68feedb0f970517f3fe564367f0674a440988a4938f8849f1fa236",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OP-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "2fb44e074e8ba9cebff59789a56344a4b45833a0d54392fc3b315ff20b6fb4d9",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OP-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "f5a469363020f8919691f36c7f7d18eb99de6c4b2b7bf95e800c33b006374a81",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OP-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "70a074b4b489b7cade35136cedd8f4acee6f61372835e8be8bf9695c7df69b7a",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OP-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "9d8a10d5f9b0538c772162fbff996ff0fa45eab4c4fa0f4735ecfdd1eb89c882",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EXT-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "54e270f6482e2173bab30fe2c3b5e07d1a04d38f7f53830a8765ad9f209652b6",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EXT-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "6a88ecd499c3d1f28ce0e026534d9de754855ea2cbac9d6811fc464b97b7041a",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EXT-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "42aebeaedf9b72f6779bfc05fe5e9b172279128d47639af7571a5cff5d7be90c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BASE-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "7ae467b74016afca61fa07066590a0ef72530a64875f310f6328846dd370dacf",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BASE-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "c157de736234f84b1f8c21a0a3c7c65641b80c388944c5dfc7399ae01b3ef328",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BASE-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "8e39a1ffc87d0e25e5dfa19995cc3877934f98c4a0dc68c4c212b612830e6e19",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BASE-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "3919326e17a359b4994a6bc71cacebcb54cc6854f1072628fccfbd034ae0c127",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BAR-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "211ba9c672e7a6f3d493d9aae5530b057db47427814ce63123c7fbde53c523aa",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BAR-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "e5145d69464a88a542101e6c45e5840044e35c77362f093a17c5d42538379865",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BAR-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "9dd42a4df435aff1629deb79f74ac8ab617eafcda30aab12068b618b633c9412",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BAR-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "b81eda428a5871e694044b500f3df10f111c467d87502125acd1ea3330448004",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CHILD-1",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "520235cf227a34202b76d377371a6c35e7885d4d826864394ce3658cf3e991dd",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CHILD-2",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "e71eb5a0a27f4bcdec888fb7894f356cf440325d7e5d15082ffaa21ad943d92f",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CHILD-3",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "47cbc1480b66743a02d2e9cf059507c20d83474d13fa312199c184f40dbeb409",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CHILD-4",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "7a236c0441c54712c9377f767fbd69dd4d9dd45b018113c916d6ba0318d89394",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CHILD-5",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "c99b857601c9f682563a0d02e8b893dfb92471c992988dfec7e065c5438e13cb",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SEL-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "cb36d418cb489fa58479d9fcd8f601607777a523f30ced6f3ba01c7dd5eb1bfb",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SEL-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "66b943d3b5d4eb75ed08791087147bc204c51adddb84f0af376f153f7a0398da",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SEL-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "b2a98cc7eec7075e82ea3de5a4f2ea476a7b72566d7141affb294c4eeff0c974",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SEL-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "3af411900474ef124e817de1337b35b7dbfb5a842a3651c8a42d2f1ad5580974",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SEL-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "39759eb19fc8b7092dc9e08e6485799daf809c48482b083dbe647b3dcb015841",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "132642872eea9267927592c5b49103b1222c3eedfaa81ea991f7b45e8d24660d",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "ab0811139354e3f94b3e415eb7f668063d8fde891cbb95ffbf54b0fc3bd036dd",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "be3b2f7a2d087f70fcac07d1a8fc30038e1889e5b09e9d1e5b1ada4271a249cb",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "80c77ac73fd4705978ae4090707fd4ad5572cc5267a9e796eb1ff9d132bedd6d",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "43d70d0e138a4ddace1f1e013194f31b6f9db6dd28d568c2a603132fd812f41e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "02d517507a0b33fea727efb7625b5f981f400b6c94b48a1b3ff488c1bafda513",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-7",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "1eb5ee18ba05d2adcf9e3acf75a64f3f4fdc62c97f796fbc1e201fbb1ef7469c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-8",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "22b12d1936f2f18fbcc3059254fc313508edec22b88d8414f96fa5f6d05e5617",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-9",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "11f819f96385b6c3f950f37163a5693ca1637b7b2debb1d031f0a96e06925218",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-10",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "fd45e4931cd2751711766c05fb46fa1e24c8aadff8a757ae2369496806a72074",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REC-11",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "aa4a1b02c45fa5a127c233fe8f6d9061c6d15f0d2aba70abee32863292fa753c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CMP-1",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "ea4761c387b756fef3776fff61c8dd7daf19615979b59fee91d05575fb09afc7",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CMP-2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "5a5a51f3aafca3f4f90de022806525ac4d25b9fe16a45fa526e57daa1e93ea9c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CMP-3",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "d688a5380660474dd94f3544c905c4d9833fb7fe3d0121036480820c86d4c8cc",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CMP-4",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "8bad2cfcdc144ba109f1ab16cc1e02b88830f72138903653dde1aaeecb166030",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CMP-5",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "2daa7f09d7c62e49b0bd5c017f8ab408d5776d15dfe19f456303019afa888034",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CMP-6",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "018ba71294b6116cd5c188bafd22dd3997d4be9679e3891152f7b0bcd292d56b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CMP-7",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "88f64802352cd3abf7cf04bafdcf7613d66a5071e0a61e56258767aeb4514b9d",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REV-1",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "abdd6d9efdfd481a5060f3fd7f3079dc3c4323571120b02fbd8b31547a61f201",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REV-2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "cf30b2c4a896873b20c41b82317bdc29e232ae65bf25371f7d92653a3095ca9e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "REV-3",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "31e748e3ba84ff09905dfad95ac9a5f8c8c98cbfe60c8bdce6aeb31ecdec74ad",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "ADO-1",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "f4819a5a983bed1916429f5a77ad04da790f55a45ad38753b65b906bcbb78186",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "ADO-2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "d9b7e37cc721ebe92ddec37dfd34fe039a8e8f7e1fdf671d4bbed4e65efe4e1f",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "ADO-3",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "c836f2f984f2f66e8c4f69d0a937d5becd12d864cba33e3279526040a8fb1ec8",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "ADO-4",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "1059252443118e24f359d5d3c77ace91e404d03d4a0c4b23165381499039cbbf",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "ADO-5",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "4f8c2585f77f9e60855d6c56715d9bc2a53b74ceba7f4f16e282bc8b37dfc8c7",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "RWD-1",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "b464233091b69c791535176d73972e78045d5d31eb16ab8e357ee5f70e91fcf2",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "RWD-2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "b97d5d2a1bbd0d0f13ac0efe33f8cb16b49686f5b4065735594b67afaa9481b5",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "READ-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "19538c17260c74c4b2d5f0f89b86a71c559e16fd1270a81858636e92d57feb1c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "READ-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "18e1d644968d727063b60598ea9536ba3644866dba96bc0bdbe805562ef1cbf8",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "READ-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "1a052c584c0dc77c8114f06c9325ca84925e0deaa65a824c4dd55c4654cc1a60",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "READ-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "5d9dc754745c6da7911f84285b5110e496f827d790987417ffdb2adea7b89e78",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "READ-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "08f5031504df15d42e5310861534d11dbd5551bc68c8af619ce55eee2704bd2a",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "READ-6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "493f1a969e49326f2955a34dcff3b8d7ad09475d211c9086a5a49112a67f97b0",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "cb61e0aa71555ba5a8ba8a7a4340b2b0ad4b291d154a6ea189e3bf38daa39317",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "8a4c18b8f79d3180a7aecbada98c3e660d0024bba89bc2ef5668743d54155b92",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "1eb0fb1461b9c451b352e5a6a47b9fb5e944b7a2556cbd54613eca300dc13d08",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "29d357343a90dd12a5f90392093781a0dc25ca45bb6bd5bee0a3548804481280",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "8ef6995cf85796654ad28589be54efb008b34e9a5289ef0722535b0cc175561b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "d88453ae7d0b3f27bdd5e53ed842aee9d24b75eb82075717236f6f67931c1415",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-7",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "17a6c3a6d4198c796fe1a71f19a5dc15a5cb6c83d9307d5a034914321f3b6cd8",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-8",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "4f2502ff2ff01c296638173f99c9d8c94406ed9e04cadddfb528c1eaf834a56e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-9",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "d04da6ac4a7b55f0755b532df6b0efbd7359f67e7ca176eb6bc82bc1413b715e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-10",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "bee5c5a1688c3ee2ba559a26e8c8a3d15ea8f90ddbcc55acfe1f46c8d7b9bd99",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CKP-11",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "e24d4fd25b89c3720c7945c5e1260b6839ce8a8da14712342e6171e08927a0a5",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PRJ-1",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "69539d8c8b9ecff33d63b869f7680100ea588f7abe9e41a8f745c20f00bdb7bc",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PRJ-2",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "ba0dde105f3aff241314aeb6873bd7dfe0c53c9dc08a80804434726a08c409c1",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PRJ-3",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "797e5eac04d22e67d9a27b801d0b159d7a7fa98c44218a64a7a81cab1aec8b53",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PRJ-4",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "6ee7a8abd93fc9dfc1641a44a2c355e02ca97e7c73f338554fa7026b844f8bab",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PRJ-5",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "766dae7a1a9efc0ab7806a6af0ee7ee44082cc3c2f10d002facf40ef88e55f80",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PRJ-6",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "8de30e0eabd6af467271861195a527d73c7de8a8f411f5cb73fe1700c85eca33",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PUB-1",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "2a4e9b3907287a8c55f05bab96454b3d545a60df526aede90d675e0d2ade8597",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PUB-2",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "16f93285f0b5fd107e942845b3b6fa5114512257b8c9f11ae10e1abd0e3add90",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PUB-3",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "ca86471c5fbaad17d05f43159790d22d47d8b125e48888fb3e1f92908b20416b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PUB-4",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "35d732d96a987066ad87607226d231550149b7643f8117df901e63f062a5a4d9",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PUB-5",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "8d2a9543b9a7bbf20505cd5edfb770bbb5f925fdeffcb682a6565608330925e5",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PUB-6",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "641b82dc2c4508eb474a07619d82df31cdc0e7352f3d6b9c779e738f3cfe0ccc",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EXP-1",
+      "stage": "POST",
+      "disposition": "preserved",
+      "definitionSha256": "47cc4e0455cf9510a567a2ad2f203eda7f7181c187291586a241bae64b4f825b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EXP-2",
+      "stage": "POST",
+      "disposition": "preserved",
+      "definitionSha256": "afd248ae5a20da9581e98213e3e98b14f2767c32f36d2c22d5be0ccb9be56c0c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EXP-3",
+      "stage": "POST",
+      "disposition": "preserved",
+      "definitionSha256": "c75d4f1e8c871c9d32d0972fead486f3c00a25cf23eb046c60898ee2fc29c85e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-1",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "bf204126ad147ac427bcba5dfaa04f7dc0ce28061fd9db6bc35587867bf36797",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-2",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "0a1f5c17d821c47acc41f70c42d8c08da13405d1a2d827950b800c9dd20f2343",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-3",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "91c84d3bbd9852d7bfb7a747fd91864649ad4a344e7a36224330de50e14bce94",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-4",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "a65f089e18f302e0a2ddd935af14ce5a4a0c3fba521890e91d0722b48827fe44",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-5",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "9520e3418c7501abd0a6dac544662360c581ec9b76256ea43a01708fb77020f8",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-6",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "3251ddfeec1a096ef62eacc54333561825c044edcd86cb70a1d9d0ca81bfc896",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-7",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "5ab8c78dd844ddc5d8070a9fd094c01e8f4fcd52ec2de03d1c8dd08e7968b51b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-8",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "d2649673e3b6e58a203a993efefa494560f6c76c6df36a90f8549fbfb24b8b47",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-9",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "8e9ab580d2881ae38f984574d1f408ccfba87cc73e52ff0a94868ff6291bb96a",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-10",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "b4de70354933d822cce3c65947494d59e4a66e85fe6416bdd516ec3d3cc9130f",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-11",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "484116c690452f66b2c359145dd69ac48629541deecfad6cda3e4b08e8fab6f4",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-12",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "fd6352cb6f5c4b29db2ad950823313e36a37e3eb22178fa325f66e99c8c2bd2e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "LAT-13",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "d43a2ba4c99610985038dfe53ac7f29756ac78f60af958368fac47da51c2ef30",
+      "gates": [
+        "V39"
+      ],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TASK-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "28c6bd13ce9a1f689b74cf78fead0f7ba5f9fac477dc622095a1bbfed2ce58ea",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TASK-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "d29fcb3b3d26afa482b93c5e5c4bf6639bc56cb810c55594ab8e764f516e06e1",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TASK-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "5f2dd86f0a654c5ea240b9c6d92ad927adb99692f1afb76d7bdfdd1d45bdd6cb",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TASK-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "9517ffdfc2fb60606fed689693b3076762cfae0ecb5c5107a37caa98cbb02e17",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "ca66dc34d2974d5f9e132a1453afb0111f832fba6a87359292207a215d0ba536",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "2461e7be0cd3dd6c506533687ebb1b479f54dd36b381d95280d503621e40b960",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "77d38ada4fa7c94fee4c247bd3facd20acf913d3d020e5e463d863af39a80eec",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "3bb7d339d1c16279fa4a3b357e59aff1bdc5be376100fb70d8946ab1a50b113d",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "11aded549b498b404398248d755e8b36aafaa253286143d64be0d4bfc44a1fbd",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "2e0975312f8e174df4be24d65ec70d5f6beb848e5455f54d95d848580fe4e766",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-7",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "61443ce037d3dd5e2e0e0c05dd1be571a0c17424f3488713713c69665da61c06",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-8",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "e4f7ec1640f8a7991be688cc43aedbf918394056c115da5858dd5bbc06cc588b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-9",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "b9436a9c969770daff4aa6c70517d8f150ef514528791cf2ae53d161115e15dc",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "INT-10",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "331d333e90ef00bf1a9a60ac3b84a56f9ead7a3908efccb843baafd9d820d9cd",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BIND-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "378b4c2e2c68250b21955d83c8879e6ef049124f0e979343618b61aeabcce1ce",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BIND-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "436c896094d1dacd0c3d89ce82cbd630de20f82ffbdd6150d895555f895c82e6",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BIND-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "45f80434d40d30b3ba588e10cfe984940a55bc2c1d56bd168c53e63a2bac9d55",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BIND-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "4aeca588caefd33fedcb0933b72f4ac34729a6274cbc17b479da90d400edfad7",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "BIND-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "0b0e76756c555d0122d85d00bb85e68f7454e484e3ba31d3ca5b05915a6cff42",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SET-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "2970126c4597e200b070da5ab1cc741d1a8666e216e865046c19bc727c8b18cf",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SET-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "084f852b4df06553a042f2e3a78ec8fcaa6993371804d3f862db90afd0c40bb0",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SET-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "c3be0d0a864b9ad262c8157831bc8b01a10f3e68817e02819350f74137ffbe62",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PROV-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "b681ca2749cde98d5e4a0f2e8b98db12fea423779c54992671d0216c96adc632",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PROV-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "8f9de2f2921bd1c5c741b54da0a2dd5e415cce3902d9091b367c5f6ce0940165",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PROV-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "5f0ba3b1ee8d0318c8f054086b4a21dfce893cfbf79ec724698deab84e7f3a33",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PROV-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "4fe9d75e78b75acb9bd8ab2f316f3179dda802bb10a65a104f0f1079e1ce4570",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "PROV-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "27d577fdf6fcbd787096eb8bab1669b47ee3ace5c2a8decd15c6814c6e953671",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TRI-1",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "afa003eb20acfce6568030d121bf1382e4e6dfa4ef69cebbcda39271f45bb46f",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TRI-2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "684117c2dbb6a6348ae7c3288e760aa13fa75107ef2ccd0c8e0a664a2e40faf4",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TRI-3",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "0ef5fdca4c3e56474b06a048efcd352370cb2079a3cd6d5d1ef38eec6af2205b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TRI-4",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "6b28b2b0b335946adb1a2d8f6e3ae166acecbcf15be33599ba0af322a4d84680",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TRI-5",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "6d704872b7763b2a64d9a56d964870ba5085a715eda10e66846510c4191e0bd9",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "TRI-6",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "586e83c2198472fc4d8f38b5c7fec16629e4807e448664c55d15d8a4dfcea4fd",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "IND-1",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "2167c0fa1d5ad74f97d4e711442c645b5de42bd1e88a0f08ad106a190bc6bfce",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "IND-2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "4400e81f89fab35719dae1f2707320937e1605aa18838f0b326dcede7ff30c89",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "IND-3",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "06d6ae8ab9804db4ccc8d0c0a521407b287040ca25080e3308313edcec4770af",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "IND-4",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "65179400852719fd97e80621016e8e106ff37b1e326ce0d7cddc5e8696dfff16",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "IND-5",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "0c2980437ce11d3a417def3991fe6d0e6d0564ff7c29a4d5c6fbb992c679fc92",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EVD-1",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "010ea51aa194ff842f594c71d2b937e49f2e06b90e436c2262ce254db21d73af",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EVD-2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "a4786d2fe389940ce68ad3e6ebad1fe07ffb7bfd2688170a9c6b01c61a6f4b16",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EVD-3",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "fa84c6a1e3b50c441b048ee4f91f80e579eea0ad65a8798c2899a8302b77bb5e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "EVD-4",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "42dbbf807c4c317aa22322db85e2b9ac97e8dfc04600eb07ff1905c6e9220cf7",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CONF-1",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "5a867db22c42398b2e60edab1df57b0a816498588cd72b003359ef43ae27b5bb",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CONF-2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "6056b02054257aa2a38c69438213a174d40939a1c97fb9fb2f0b61f6fc7a4edc",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CONF-3",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "90e6ea8c9789bd471f7ac57d1a47111bc99297a6eed94d3cb83aeaee647f2bae",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CONF-4",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "c4d64e818cb909536b8392f3cb7daa6920dfc33bb8f5eb8602fc78b57cb0ce2c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CONF-5",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "e6d911e279240e1d5762e73f72e8bb9c5420bcd61c578733c763653256dc60e3",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CONF-6",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "3f2b9afe6c38815d4855982fc87c39711d3c14e39fef92171e8fd9aa36716f82",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CONF-7",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "0b14f0b5ab70dd7c7bf6e437eb38139e5745d40d4f61c518c06b171d82b4cb90",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "CONF-8",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "83b566a262b02ba1935bd7bdd39158aacbf88e1b3b42869c5a75149f11e475dd",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-1",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "57f5eb32c6beab76ac6ea33b887db4bc3b25240f3895e548859eeb1afef00b16",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-2",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "1a3227f2420deb711eec67a0cba71958004e76f6c2127175f066745cdf756fc3",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-3",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "3af5bf35f113d11dab34928fdf367ab84aa209181f35fb0f79610bffc910a5d8",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-4",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "dae684238ec0c628df5350ba0d5c919261a953d6fb38a0adc602a23851f14616",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-5",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "50188a4497fe3f913935e798220a432560d8955c8126d6b18ebcc9cb09d4e01e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-6",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "90651b49fe6800d6982f65659805b249574160921df8121ec57f5e7b300dbf43",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-7",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "6fd1b9d8ca4bbea6734c926477d40c19d954615da9f23ad50f3723008e7f7bb4",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-8",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "c4fd02f78026a30d62b82d6a3b4f06d6fea35928f11f34edcd3edd7d6bfbbd7b",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "KNOW-9",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "568118241dcb7f57d691cd8985847437edc483fba10ae31a8bf4d57111b469cb",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "AGT-1",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "2811a3cc657499696f33b1bf6f0b0df47955664efbef30dec85e1711b8a91a63",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "AGT-2",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "1ecb54fdc281871988db5abd0cb72e0a565cff1ff5e10c425577ac4ffff72d69",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "AGT-3",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "4a3e6fc6417fed7a31ecbcb952e01cde67470aa88a69ef1bf9824d63e66f8f09",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MEM-1",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "a9710133cd8651b0e55c48a89c4dbec333bb01bce020b37d68d0295f628aa5a4",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MEM-2",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "75c3dd73589941040aa8667eddeb15d9971ac39fc6eacd49e5e51437f54e7818",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MEM-3",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "b5fc963a8557733bb206636608734676a24498e0ef417dce9438cb29c428d9be",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MEM-4",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "348e9b93df4675e3991380ee18fc2080dc5d0cf209b580b71590ea779a16b863",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MEM-5",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "ab6da309abe62a5901fb742615d9f97544f16aa976b714c75474b9e037ecbded",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "MEM-6",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "05804895a1bfd21ddd0d8c59849f512d60dd195b546809b85b407c90a89bca9f",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "USE-1",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "eb51b9cf88dbdfd7fad51d1fcf04de7a6e927dbc3fc5c2ae7626f4323de1c72f",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "USE-2",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "7512a22681638cb95e119b142254028890cfb61ce418bc00bc80fd56ab91b063",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "USE-3",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "66796b7115eb609387e94b7f6e4d40d8d9bbf706730f67ec7ccc2ba19388f9ca",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "USE-4",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "d697c86b69801a9c4d624d4eaae2ce9259697cf870c3dd602262b0b773597559",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OUT-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "b1f703759799352288b600aa19ec9509f78976ff554a1ba3e47a51c2aaa3cd0e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OUT-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "1115ecd6364b838ea67b30dcdde2589af6f160f2c0f07476eb99f97d1f5306d8",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OUT-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "53f38f69d21af57c1cc20e7392c0e4005fa1b46de8fbd457447cec37c3a54ad4",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OUT-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "a8c94e48b0389c96fbcfb2d0a77c31c77db17632cbedce8d4d437b8f2928a7eb",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "OUT-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "c87ffe449a7cfdb78dd9c2c99c9fde2b3c6a5503ffec68e89963f94d6d93f7bc",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SKL-1",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "06dbb186906c3879e98b085cd30dda288dbf085d1d39716de141f6b3d08e6063",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SKL-2",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "9da7a56057c9ce27f3efd241947cbb87f9cc32d81cec5c9abadb4707fe172082",
+      "gates": [
+        "V43"
+      ],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SKL-3",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "f885ce0c169ce534888f118a19d2809aa0829139a1d891e7551039972758a529",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SKL-4",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "04da184646d36d3b3389b519522de293a90392a36e94421800a582b71e9b9efa",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SKL-5",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "72727dd38b17d4cf64b02adeb99ac4edb97922fa7136d5d82c683daa86cf988e",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "STORE-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "70fbf590d74ef4bce5ed69320b21aa3433574382c26f0e7079ff2a7bae36b541",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "STORE-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "30ccfc2714108738eb683caaba4f85d0547844af74d97bdcb7fbfc2998602102",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "STORE-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "ba61244e63ad8d9713e65ef1e4e91d1081ba82290adb7acaf69f45851c5c4a41",
+      "gates": [
+        "V34"
+      ],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "STORE-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "2fdc4bd538c4e99af143408f4c85b6bac1c21ea27261ca9da545e0d6ec6581c4",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "STORE-5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "171cb475a873e59656b7f74b514c6a74216576dba1439e0689625f9f5c8c7959",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "STORE-6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "721bc0e1bbbd784ac3b59020f2fd44f6fc6b4a06d26ddb97ec69c4885f0d22c4",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SAFE-1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "aa29123e343e718fb92b61cba11b6fd9e15bb2b073b806f8814693665ab9a22c",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SAFE-2",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "42fbd7fa1adb5d44ca8ea0ded1b20917722b7463c7587eafe537aee77dffbfec",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SAFE-3",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "a13abe0894dc83a2415c0070446ff0326386c2b994d0d95931c1a73c3d9a63d4",
+      "gates": [
+        "V30"
+      ],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "SAFE-4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "145cba83d9e72abed3a5497b3f5db7df7452c5c1a54f552d46d260b668e379df",
+      "gates": [],
+      "appliesWhenExercised": true
+    },
+    {
+      "id": "W01",
+      "stage": "T5",
+      "disposition": "blocked",
+      "definitionSha256": "fdf8b2e5cfcb42c18d5003f4c3d4f2943bf3185d8e9e2e45e7d9776c867f79f8",
+      "gates": [],
+      "statusAtCheckpoint": "blocked",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W02",
+      "stage": "T1",
+      "disposition": "implemented_and_reused",
+      "definitionSha256": "a08f6d36885e36562596d1c4fb2830794a0ce5575f1ff22d16ee78c515b7b3a0",
+      "gates": [],
+      "statusAtCheckpoint": "green",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W03",
+      "stage": "T1",
+      "disposition": "implemented_and_reused",
+      "definitionSha256": "931db1f9d2c8314f8f46573ddca4f46463ad95b64e7e19aff751e86d4e0fb064",
+      "gates": [],
+      "statusAtCheckpoint": "green",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W04",
+      "stage": "T1",
+      "disposition": "implemented_and_reused",
+      "definitionSha256": "7302109178b51f8f0f9fcf6f9b6e3409c0609380a86c48f507ac6829883fe5e6",
+      "gates": [],
+      "statusAtCheckpoint": "green",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W05",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "96427ffe3c10a4f4642154de82d64385c99b373f54d863fe2048eafdac0c16d9",
+      "gates": [
+        "V2"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W06",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "f6f1c66cff91db4daf35bb482cc1d1a5885d1a167470717ed520be01bd879841",
+      "gates": [
+        "V1"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W07",
+      "stage": "T5",
+      "disposition": "implemented_and_reused",
+      "definitionSha256": "f514add3567815fccc4c6d574b233f42f4393a8eaccdb4dc4c945fc7eaaf9956",
+      "gates": [
+        "V3"
+      ],
+      "statusAtCheckpoint": "green",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W08",
+      "stage": "T2",
+      "disposition": "integration_required",
+      "definitionSha256": "5ad4deb480b0b803761cbea3e9cb97a8aa622a754881ebd4209462636b05b8e3",
+      "gates": [],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W09",
+      "stage": "T2",
+      "disposition": "integration_required",
+      "definitionSha256": "c2217688bbd08dd595ae2c665dcda5c1fe7098e632ad8a260c03dae23306183c",
+      "gates": [
+        "V16"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W10",
+      "stage": "T3",
+      "disposition": "integration_required",
+      "definitionSha256": "eaf3a031d9664edea71499c7706ed44cb56350b1186bdd588dc0afc8e8cc8e2e",
+      "gates": [
+        "V20"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W11",
+      "stage": "T3",
+      "disposition": "integration_required",
+      "definitionSha256": "5dc8b0142353f99262f117e94c28f5b57c6b87520f7c01e681d129642f534430",
+      "gates": [
+        "V23",
+        "V24",
+        "V38"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W12",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "5a7d8c5148787a692b86ac9b724fc2b9c5c2b489fc44311d3f5019db85bb9f12",
+      "gates": [
+        "V31"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W13",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "21a5717badba92e9e62a74cc7cdd60b1b5572e347108642d7178c8dc69d2f917",
+      "gates": [],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W14",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "84f3c8821c53d8ce464dd2a5f347c15259d43db848cea7a88b6ec3c646f5e549",
+      "gates": [],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W15",
+      "stage": "T1",
+      "disposition": "integration_required",
+      "definitionSha256": "bdad44fb36d293be54c69f6ebdecf790e151b62c1f4c84ef32bbcaa7c0d122a8",
+      "gates": [],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W16",
+      "stage": "T2",
+      "disposition": "integration_required",
+      "definitionSha256": "fa2f4d04e0e9e5d4efa8d458adbfbcb75af41c83f13bba00f3dd4623ed96e1e7",
+      "gates": [
+        "V4"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W17",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "de2d642390be6cf58f4a02e8899a5f484738f14e82557701d0c2e1daac38a075",
+      "gates": [
+        "V36"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W18",
+      "stage": "T4",
+      "disposition": "integration_required",
+      "definitionSha256": "c114e29b10dd20960c9d7a059b94fc3147ee307a67602672cdf6d15502116661",
+      "gates": [
+        "V26"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W19",
+      "stage": "T4",
+      "disposition": "integration_required",
+      "definitionSha256": "431a2b1fd4bfc8452279c7e8fcf2d25fa3a9ab79405ea0e2b7e728817120800f",
+      "gates": [
+        "V25",
+        "V27"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W20",
+      "stage": "T2",
+      "disposition": "integration_required",
+      "definitionSha256": "3c63e77279849c43ce07fa76bf7e217272653540e763b7907441ce6152bfff51",
+      "gates": [
+        "V5"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W21",
+      "stage": "T2",
+      "disposition": "integration_required",
+      "definitionSha256": "826cbd1d21254671182aa2f368f78ae9c5f66ab6569a1eddc78cfc14b1ad2773",
+      "gates": [
+        "V6",
+        "V8"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W22",
+      "stage": "T2",
+      "disposition": "integration_required",
+      "definitionSha256": "7e2dfdb59edad67a85200735707239a44117f04f92df87b3cccf2a7e0041248f",
+      "gates": [
+        "V7"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W23",
+      "stage": "T2",
+      "disposition": "integration_required",
+      "definitionSha256": "88a916433235377c6b2a21fd0349febfc999ba5721fadd3d01e72febf2980fc6",
+      "gates": [
+        "V19"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W24",
+      "stage": "T2",
+      "disposition": "integration_required",
+      "definitionSha256": "8364ab6435d34f21ac1d0939bd5e039b59f7c5d78e2611696400e70e5ea00ad8",
+      "gates": [
+        "V17"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W25",
+      "stage": "T4",
+      "disposition": "integration_required",
+      "definitionSha256": "55a440740f0b50ef8669d1ca30281132948c8f87cba3b1cfcfcceae0fdb13d66",
+      "gates": [
+        "V11"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W26",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "cab234d186931fc3794340f2ef223f7ec9b8735fd640c4229eaa229ca622e076",
+      "gates": [
+        "V9",
+        "V10",
+        "V30",
+        "V32",
+        "V37"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W27",
+      "stage": "T3",
+      "disposition": "integration_required",
+      "definitionSha256": "f4de24d1d3fe117a55511286a613de90de7f7952e381693bf95f3e48e376f6e8",
+      "gates": [
+        "V12",
+        "V13",
+        "V14",
+        "V15"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W28",
+      "stage": "T3",
+      "disposition": "integration_required",
+      "definitionSha256": "3c8fc2cf318950843157e4e62bdbd51093f22273543b9f1c15882f0167228a0b",
+      "gates": [
+        "V18",
+        "V21",
+        "V22"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W29",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "ebd5267882aaaaf1d7e4e464527e8421752432880d59df70cabe9d04b3fa243f",
+      "gates": [
+        "V28",
+        "V29"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W30",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "51d8ec58107871415554a51826dcc7963770cd6222e74293a08c7f8b310831b7",
+      "gates": [],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W31",
+      "stage": "T3",
+      "disposition": "integration_required",
+      "definitionSha256": "831c3ec6efcfaa341645172d57e20d3d7f6bf7a1ad85278721c658731f913a39",
+      "gates": [],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W32",
+      "stage": "T5",
+      "disposition": "unimplemented",
+      "definitionSha256": "f98873dfd8cbd4e68ed21fbb289b0f267af7dfbfd7eafd788f0461ee6458d5e8",
+      "gates": [
+        "V33"
+      ],
+      "statusAtCheckpoint": "not started",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W33",
+      "stage": "T4",
+      "disposition": "integration_required",
+      "definitionSha256": "0649417a28288ecc949dcc4f2de99b7c388e4a1d7b67934a989997e6f9a676a8",
+      "gates": [],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W34",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "c1f1bd3d92333f8a4700784455c3dace74c681ba3e9c16eff85683366b5ba1c3",
+      "gates": [],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W35",
+      "stage": "T5",
+      "disposition": "unimplemented",
+      "definitionSha256": "1b0a4d0ecc1233724db5dab10271fb8cdcd09a97678eae7072fd8609229bf326",
+      "gates": [
+        "V35"
+      ],
+      "statusAtCheckpoint": "not started",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W38",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "210fee1a758e18ac6cbd17c72b9d13cd03b1affb7d4785c29743910be755fc26",
+      "gates": [
+        "V39"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W39",
+      "stage": "T5",
+      "disposition": "integration_required",
+      "definitionSha256": "58e09505bf6d3d19306cf4c016da93fa37cb2da516da160d194e4cc8ddb06ba3",
+      "gates": [
+        "V40",
+        "V41"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W40",
+      "stage": "T4",
+      "disposition": "integration_required",
+      "definitionSha256": "24c77da3af74c0ac68db323414e37107fb11bbd80390c265cb88aaf9afb7a7e8",
+      "gates": [
+        "V43"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W41",
+      "stage": "T4",
+      "disposition": "integration_required",
+      "definitionSha256": "38a79f23f6c28bbfe72e27545987c001d82bfddc56cc8350efd6971d18ee4dd1",
+      "gates": [
+        "V44"
+      ],
+      "statusAtCheckpoint": "in progress",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W42",
+      "stage": "T5",
+      "disposition": "unimplemented",
+      "definitionSha256": "c35752effc7676e86cd41bf3530a15cc93e515b0343e6feb98dea5ce09d279ec",
+      "gates": [
+        "V39"
+      ],
+      "statusAtCheckpoint": "not started",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W36",
+      "stage": "POST",
+      "disposition": "unimplemented",
+      "definitionSha256": "cc744b03fbc9bb635ad5718b69c9ba4d749aae5cfb4a40cf869cbc96a10a8776",
+      "gates": [],
+      "statusAtCheckpoint": "not started",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "W37",
+      "stage": "POST",
+      "disposition": "unimplemented",
+      "definitionSha256": "d4cdf2b0aff3e15439d1901c7e2d5936d21275c832ee9fbdcdf69aad780c6345",
+      "gates": [],
+      "statusAtCheckpoint": "not started",
+      "stageMeaning": "Full work-item completion accountability; an earlier tracer may reuse only a subset."
+    },
+    {
+      "id": "A1",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "41d1aefb2de6c6d97e696e09bab48a03893e586f9bdcd9e1768814ce14b5c501",
+      "gates": [],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "A2",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "71b29ed58d6724348e19b47799a7fa853331118187edbc6a9afd4130651d5a78",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A3",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "59ef67a5235a9ae70131bac7c1b6aa6d8db7875293285701a88dcab122a39dfc",
+      "gates": [],
+      "statusAtCheckpoint": "blocked"
+    },
+    {
+      "id": "A4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "1d2df4a626a689bb9b9b5d5965ee62ae43b61bff8c5cd86fddbd3a017f15997d",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A5",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "73290ee8a6e226d6eec2885748e565d6c3f97d409c683f8714ed4cdda0bcceaa",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "9e752cc48fa2531db23bdba34cd27d85839704fec5d8343b1b5dbed7e32173fa",
+      "gates": [],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "A7",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "05c5c273345cb4b36a355e9838002bb931696cff630e9bb2c11fe4d20ca56529",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A8",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "b8b9f0b15afa15bbe57d188afcacefc65d312771ed19b8fb9fda78db42b517a6",
+      "gates": [],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "A9",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "54f583a0f642a8dc8eb44b9232bb1041d7eabed3badd5d9cbe53ae30c2dcddfb",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A10",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "8ffd6ba239f7212db2c0df07043ff9673d3d69db9b66f5cd8b0983a8abe20189",
+      "gates": [],
+      "statusAtCheckpoint": "deferred"
+    },
+    {
+      "id": "A11",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "4361ba9c74bb60e926bd367bea8e3ed23d8614ea53dfea87c0301abff6ee7a93",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A12",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "d3d3c14827806afb8aee87b7ca983847788032b947cf575ba8d27d8e7f70e3e9",
+      "gates": [],
+      "statusAtCheckpoint": "blocked"
+    },
+    {
+      "id": "A13",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "ab72a1b536dc1b7c3ccc38f1e829ad4fbb697531330de3b26c38ec19c122a774",
+      "gates": [],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "A14",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "309b596f4eb125d1c44344ae1cecbd2e1610dd2cbaf79c2143b2389815787765",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A15",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "3c4c8c7e2230f00ff8c8a218e3217e55aaf22ee11bac145b302b47ba6efee928",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A16",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "da02c02046382f8a05257409fc0bb25ae5b6a9e0aa3922a93048f129f202a402",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A17",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "a7d56d9d595a229dea762b0a24caf48428fddceffdb00331183cc7dc8362cc4e",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A18",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "5b66c798fc34bfcd5789f06616fe41339a15a0aecee705daa9b1ce4a45ae492c",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A19",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "46032f2b159e8938908c3f6e93b9b889a80111f1a52405d9d71975abb1e364f3",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A20",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "0f43647d5bb3994f219140f077979dfe88931b0da925ffc48c012c005055a075",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A21",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "c4edb3d4e6afc1f5db2c3b9157e5f501f1352ceb1569eb6b9e365aca77b6ebaa",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A22",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "dea5620ab1724320015d7df8a1868f3374a18b9bbcccdbe0e93006272506d334",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A23",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "09a71c461c9029007fb4c9e583cadbcca0fc9fb51503e2225106b832f67b68e7",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A24",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "3edfcb6d8eef4599fa217a971a013d6c74280acf79790d756bc92de1370342fa",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A25",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "d715d1e41ca13a53ed32f4bbcf4f60d525052e98c5ff02e93e8446e48d8b944d",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A26",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "c26941aa897696cbdbf8ec36ae2b084a235914852a2a601db846171c92e07612",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A27",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "85e6ef06a4b383c741f88201ab3884914ae8928fd2ea2f8a673bc1606bb88ed1",
+      "gates": [
+        "V34"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A28",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "f3c1f83c2425e2eea0961561eaa4e0cb3c916aa88006e2497268ade753165281",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A29",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "bebe48936215945fbdefe37f15276dc3f2940bc27ea6717d09c135835e415079",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A30",
+      "stage": "POST",
+      "disposition": "preserved",
+      "definitionSha256": "3f3957af6a56b1f5b1459927ea7134f863c10d18c1f540b9c4b4c80e6410a21d",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A31",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "f35ce0fd3c6f3c3bdc1c29a1ecb20752c5566d411caf5a9a9f579cb5a091b96b",
+      "gates": [
+        "V45"
+      ],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "A32",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "fab9a5d1c510407925fc031dbea395a5b6c07606e8ea37ab11c34ae2e51646b8",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A33",
+      "stage": "T4",
+      "disposition": "blocked",
+      "definitionSha256": "c9acbcc3e2d211b8781c9aa80bf7ed78ce18aaea8892f76be76405fb9013012c",
+      "gates": [],
+      "statusAtCheckpoint": "blocked"
+    },
+    {
+      "id": "A34",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "44026aa227c38755992ab8eb1ad48f2d72ead74509b7de8af1ed5f09aeafa708",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A35",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "b8ca3428c99918fce92e9a193625b9487db1baead56b9e8971fc00b68b9be236",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A36",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "32d7f9868e99fa621d0666e30e72e6c14fdd90901e53f0cdc7dd0f2f074c81ea",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A37",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "fd3e5a1191781a1783247610b691772e4a2fe5b85675a7a5d1141e70cfc0db2c",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A38",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "6cb4cc28ea2d7c0f4d2a68a93688e6654ca87037e9baeb0080dc8168630a342b",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "A39",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "aca64a01de18ff05677782a58261f0cd94f3db5fa59ccd820fcd0dee5be8ad94",
+      "gates": [],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "A40",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "7dbb7c4555abcbda9ee30fa1edff1d76e4d76f2cb0c3abca42ef68925a4153ce",
+      "gates": [],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V1",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "36d4ae7231e60646e169043c927c5082dd9798984b9a946198bdefee2c9fbef4",
+      "gates": [
+        "V1"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V2",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "ba64cd30729a8fb86686f45321d1f17fbd437277a8c158bd3d2054bb69a63187",
+      "gates": [
+        "V2"
+      ],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "V3",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "3c23de40d1781ceade1db9a0c75af4afd093a62a5f2a17fbcb287abe46a6ee2f",
+      "gates": [
+        "V3"
+      ],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "V4",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "2bd0a59e66a3687b2294f4c7e69806783beef4871215eea9f81df6406e89f629",
+      "gates": [
+        "V4"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V5",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "00a1f8f5edc09df5b407397fc7afcddba39de2ad834796b0c3aa029887498d8c",
+      "gates": [
+        "V5"
+      ],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "V6",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "eaa3f884c16ff037c305d7c77951e6f9a46dc84c8ade489623898f3362bd1792",
+      "gates": [
+        "V6"
+      ],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "V7",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "a9f1ccb66d9bfe7e7e6a3c4ec460afa333fd75bd492e605e5bec161338d6528a",
+      "gates": [
+        "V7"
+      ],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "V8",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "4a9a4527d4df417a57691cbfa391e764430b84370a06791f078631ef34f26b5c",
+      "gates": [
+        "V8"
+      ],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "V9",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "2a2554418cff9771b5b0ea6730c0c42fa288c9257ea05bbc0fe6d121b1c539a3",
+      "gates": [
+        "V9"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V10",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "0fdd64bb84902a7101d31fed3f46f17ac655a4b49b42a98f6b726ced10b96073",
+      "gates": [
+        "V10"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V11",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "2560176d9d82878613d138af0dfa90bdcb8e1b143c71f8140a987f75e8b02f66",
+      "gates": [
+        "V11"
+      ],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "V12",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "f677d150d1349ee32c3b377fca0f2e52512ad7631df3b5e90a4ef0df86fcd17e",
+      "gates": [
+        "V12"
+      ],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "V13",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "4c42513fdab6a6274fd138b47e7e49774f8f06e626c861ba961a64c889f09bac",
+      "gates": [
+        "V13"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V14",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "cf725c7477f97f4ea3fbb30790d24f136b528f245dff13acd3303fd50d66d13a",
+      "gates": [
+        "V14"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V15",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "d199e8774185f307ccabcf9c67b3e40fe15bd2cfaf349f15d16425456e95956b",
+      "gates": [
+        "V15"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V16",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "c3d5648b02ea799e25a46679109b4f88d46ad0f8db23f3c055adec59d3810c16",
+      "gates": [
+        "V16"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V17",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "bbda4b26272bbd223e0987f3d0e8139245a7af95d2233805218a58f42c53f3aa",
+      "gates": [
+        "V17"
+      ],
+      "statusAtCheckpoint": "green"
+    },
+    {
+      "id": "V18",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "0d60b994384259eb9610e567744f7b08572d3dabb30d9a06748c0e733d2153e5",
+      "gates": [
+        "V18"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V19",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "5f0268f525f4887febcffe3445769fcd39464bd750c126e2c27dee50c0696936",
+      "gates": [
+        "V19"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V20",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "76aaeaf6f96a74588c14ed1ebe41ce03c4e7339716c4a2cae2fc5f0e4cb11568",
+      "gates": [
+        "V20"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V21",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "60f50fa4c37317ee22de4d63799d72fffb71e2671af6d4d0719ca8c26922ecaf",
+      "gates": [
+        "V21"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V22",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "6e6512543799efc8faa219de0e5e8f49a9f5651ac104eeb15e7c73822ab30929",
+      "gates": [
+        "V22"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V23",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "0f15a526588870fbdcb7857c79362654015bb41fe4b7d87ea9741b50799066ec",
+      "gates": [
+        "V23"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V24",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "f8e759af20b110ad7315b8bc379baf75a8ed9328552d04627e84b77e8dab36b7",
+      "gates": [
+        "V24"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V25",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "940d97239cecf639399a657294dd8982b9d71ff359c29650f237d6529e3497c5",
+      "gates": [
+        "V25"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V26",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "3736534d1a291d5629e81e4f709e51a38931bde59c9c5a2cce95dfc2fb73b2ae",
+      "gates": [
+        "V26"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V27",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "aa3080d9ffe4ff9131cdaa02b10012caea2cfea4aa7b7946212a79fd1d368c16",
+      "gates": [
+        "V27"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V28",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "052c032a91c7af36969b75b9151d448c651a91b204c918a00408ea632c847fd7",
+      "gates": [
+        "V28"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V29",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "a84ea45c9b74e92f2341898ad3315c40137be7445d9b2716ed37f2b656673ac5",
+      "gates": [
+        "V29"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V30",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "cff44c42d1bb8f60a8d1480b2e2d95dc2bd1b2f649c27d8d6ab4bc32ab6e2c42",
+      "gates": [
+        "V30"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V31",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "bf1b0b034babe11cd399acf8cd5f542e81cb5a9a71d031573c85d6dedec0522c",
+      "gates": [
+        "V31"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V32",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "6eafb3611e4d0ec98689adf08eba4afdc908b2b5f3b15b0d038a77560c110a82",
+      "gates": [
+        "V32"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V33",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "46d54097f47e02f0f0c9fffc669618e4a53c86623ce8e7a65dd0764ed30a1d08",
+      "gates": [
+        "V33"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V34",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "e4e8281bddadeb6ce3759b37bfc64450159bd50c5cc12a4d1926909653460aa9",
+      "gates": [
+        "V34"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V35",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "87b4057df95105b75022cd05f78f65a9af694b6cf79452912aa84d128edddac5",
+      "gates": [
+        "V35"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V36",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "00cc9c120468f54e3de8de7df386f3b627654ef84dbdad4afc9ea871c84355db",
+      "gates": [
+        "V36"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V37",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "0aff28cc90716aa6ca0ea76ed5ad327bb967fe94df21a8cc748547e9b2030787",
+      "gates": [
+        "V37"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V38",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "20f37ad61a76356e3ea0545c445f50e9533d7824fcd0beef597c1acb2449f3c2",
+      "gates": [
+        "V38"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V39",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "2d26d7090b082fc2ca217d9a53d4016dd62aa302ead478665d09cec3bcb0abab",
+      "gates": [
+        "V39"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V40",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "3da38bd2c447ace1463dbe0b5b93ff4770b060054cdc7c1ac964792bb1f665fc",
+      "gates": [
+        "V40"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V41",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "480e0e7c3524007d0a2a1abb465250480fd6e731095f3d2e2030313f4429cc2b",
+      "gates": [
+        "V41"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V42",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "04c2482a7ecd4204ab9a7506f037a43abc065b8d0d4c420b5e71e53c721594b9",
+      "gates": [
+        "V42"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V43",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "75dbd00453b618c5c5dfe47bfa7b8a269405d2bef4aca0c6d14f59b54fe2ec14",
+      "gates": [
+        "V43"
+      ],
+      "statusAtCheckpoint": "in progress"
+    },
+    {
+      "id": "V44",
+      "stage": "T4",
+      "disposition": "preserved",
+      "definitionSha256": "80fe8dd6e84247960858f274b2a2885c285a5c5861d4cfff31f97e315dc85447",
+      "gates": [
+        "V44"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "V45",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "a9cd301c854cd60dc0f06a8eba66813ba781c9e04d60795a17cbe665a64ac1e2",
+      "gates": [
+        "V45"
+      ],
+      "statusAtCheckpoint": "not started"
+    },
+    {
+      "id": "Q1",
+      "stage": "T2",
+      "disposition": "preserved",
+      "definitionSha256": "885bf8af2ab0121efaa17a5ede02df65038961772a388297587de71550cb6e6b",
+      "gates": []
+    },
+    {
+      "id": "Q2",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "dffb39bd93b48eafaa70388c3cf371fc554dba44dc5d1ca3b37c591255cdacfc",
+      "gates": []
+    },
+    {
+      "id": "Q3",
+      "stage": "T1",
+      "disposition": "preserved",
+      "definitionSha256": "ee0432ecb3e29e7b54cbcad36f809c801d10dd224f86b5a8702cf14dd1ef9412",
+      "gates": []
+    },
+    {
+      "id": "Q4",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "6ad4f6e85e4d665031027089c930b5e5e9dce18edd0bad26aac78cb49eeb412a",
+      "gates": []
+    },
+    {
+      "id": "Q5",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "d68322d5bda279c4babe5650e599646ce8ededa0aa8d5b4b7c0d22ce85f44f01",
+      "gates": []
+    },
+    {
+      "id": "Q6",
+      "stage": "T3",
+      "disposition": "preserved",
+      "definitionSha256": "453aa9ef277099aa83f4a435743a41722f19df51d6dfbdb77c15693f9bdb6ac4",
+      "gates": []
+    },
+    {
+      "id": "Q7",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "a3c831901045be6ae9508f215ac1d199fc78b9a6d50fc0ddf77908f05766a1e6",
+      "gates": []
+    },
+    {
+      "id": "Q8",
+      "stage": "T5",
+      "disposition": "preserved",
+      "definitionSha256": "6dccbc4c72e5d75bf7a500877175564828b087bf62593b82d7bff0e046108324",
+      "gates": []
+    }
+  ],
+  "protectedBlocks": [
+    {
+      "id": "scope",
+      "start": "## 1. Goal and scope",
+      "end": "## 2. Summary",
+      "sha256": "8b7eefce7dac2608ebd8c4554c9ca520ff73f646dc51ea070dec26bfdf93531c"
+    },
+    {
+      "id": "existing-contracts",
+      "start": "### 4.1 Contracts that stay binding",
+      "end": "### 4.2 What exists in Intent, and what does not",
+      "sha256": "282d16ca801eb5f1d7a8874200083a44e1ac92fad16efb93feeb66ae03045837"
+    },
+    {
+      "id": "architecture",
+      "start": "## 5. Architecture: repository mechanics",
+      "end": "## 12. Delivery",
+      "sha256": "5a8e3542d4eba879d643ac1b23596bdccf2300079424fa1bd3e7b58e1c4e5f9f"
+    },
+    {
+      "id": "failure-recovery",
+      "start": "## 16. Failure and recovery matrix",
+      "end": "## 17. Risks and open questions",
+      "sha256": "90e00c94c56d32488ecae8ad531f1837254d35a2d2164dfed64c78a1bd2b8528"
+    },
+    {
+      "id": "pilot-retirement",
+      "start": "**Pilot scenario.**",
+      "end": "## 13. Work-item index",
+      "sha256": "1a1d9bd62dba8b7065ed50b8c5133f46b3c43749edd319df4ccaac984304165b"
+    },
+    {
+      "id": "qualification-bundles",
+      "start": "| Milestone | Work items | Exit gate |",
+      "end": "**Lanes.**",
+      "sha256": "d94ff11d705cf5ae7a53c3f2951d23943095e912e79e34f7137f68213bd76d5a"
+    }
+  ],
+  "firstTracer": {
+    "stage": "T1",
+    "fullWorkItemsClosed": false,
+    "workItems": [
+      "W01",
+      "W05",
+      "W08",
+      "W09",
+      "W10",
+      "W12",
+      "W14",
+      "W15",
+      "W16",
+      "W17",
+      "W19",
+      "W30",
+      "W31",
+      "W33",
+      "W38",
+      "W41"
+    ],
+    "verification": [
+      {
+        "id": "V4",
+        "coverage": "subset"
+      },
+      {
+        "id": "V16",
+        "coverage": "subset"
+      },
+      {
+        "id": "V20",
+        "coverage": "subset"
+      },
+      {
+        "id": "V25",
+        "coverage": "subset"
+      },
+      {
+        "id": "V27",
+        "coverage": "subset"
+      },
+      {
+        "id": "V36",
+        "coverage": "subset"
+      }
+    ],
+    "scopeNote": "Only named fixture assertions. Observed tests are not qualified candidate checks; clean restart is not interrupted-record recovery; ImportedGitSnapshot/task_revision None remain unchanged.",
+    "tickets": [
+      {
+        "id": "tracer-controller",
+        "workItems": [
+          "W01",
+          "W05",
+          "W09",
+          "W15",
+          "W16",
+          "W17",
+          "W19",
+          "W41"
+        ],
+        "acceptance": "One disposable Git fixture, one confirmed task, one actual provider, exact one-file contribution, actual host import/query and controlled restart."
+      },
+      {
+        "id": "tracer-association",
+        "workItems": [
+          "W08",
+          "W09",
+          "W10",
+          "W12",
+          "W14",
+          "W19"
+        ],
+        "acceptance": "Retain original receipts; require matching contribution/import/query commit, tree, repository/root/epoch, exact changed paths and separate actual test observation."
+      },
+      {
+        "id": "tracer-report",
+        "workItems": [
+          "W14",
+          "W30",
+          "W31",
+          "W33",
+          "W38"
+        ],
+        "acceptance": "Inspect original task/run/contribution/test/query facts and scope limitations; link same report from existing evidence UI without inferred authorship or source acceptance."
+      }
+    ]
+  },
+  "unresolvedInterpretations": [
+    {
+      "items": [
+        "D18",
+        "HOST-11",
+        "SKL-2",
+        "SKL-4",
+        "AGT-2",
+        "A33",
+        "V43"
+      ],
+      "resolutionStage": "T4",
+      "note": "Unmodified upstream CLI/skills claim is not validated and conflicts with already specified adaptations. Choose and qualify exactly one real ingress or the explicit adapted-bindings fallback; no silent runtime retry or new listener by default."
+    },
+    {
+      "items": [
+        "D3",
+        "PROV-1",
+        "V19",
+        "V42"
+      ],
+      "resolutionStage": "T2",
+      "note": "ACP provenance is a target invariant, not evidence all current providers have causal coverage. Ambiguous or incomplete observations remain unknown."
+    },
+    {
+      "items": [
+        "D10",
+        "V4",
+        "V36"
+      ],
+      "resolutionStage": "T1",
+      "note": "Read-only derived indexing avoids source-authority recovery gates; durable publication, clean restart and idempotent reprepare remain tested separately."
+    },
+    {
+      "items": [
+        "D19",
+        "LAT-3",
+        "V39",
+        "V45"
+      ],
+      "resolutionStage": "T5",
+      "note": "The host stays off hot status/change paths. T1 explicit bounded cold code queries are not a status/read-model fallback."
+    }
+  ]
+}
