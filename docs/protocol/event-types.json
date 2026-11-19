@@ -105,15 +105,10 @@
     "host:execution-context-changed",
     "host:invites-changed",
     "host:members-changed",
-    "hub:checkpoint",
-    "hub:discarded",
-    "hub:merged",
     "identity:auth-changed",
-    "lease:changed",
     "line-attribution:updated",
     "mcp.servers:status-changed",
     "mcp:notification",
-    "node:changed",
     "note:created",
     "note:deleted",
     "note:presence",
@@ -161,6 +156,8 @@
     "terminal:title",
     "test:completed",
     "test:started",
+    "vcs:delta",
+    "work:delta",
     "workspace:activity",
     "workspace:activity-changed",
     "workspace:attention-changed",
@@ -185,6 +182,22 @@
     "workspace:waiting-changed"
   ],
   "discriminators": {
+    "vcs:delta": {
+      "path": "data.type",
+      "kind": "value",
+      "values": [
+        "delta",
+        "snapshot"
+      ]
+    },
+    "work:delta": {
+      "path": "data.type",
+      "kind": "value",
+      "values": [
+        "delta",
+        "snapshot"
+      ]
+    },
     "task:ready-tasks-changed": {
       "path": "data.triggeredBy.reason",
       "kind": "value",
@@ -209,7 +222,6 @@
         "baseRef",
         "branch",
         "browserClientId",
-        "defaultAgentPlacement",
         "defaultModel",
         "isRemote",
         "label",

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Event-stream recovery contract (docs/protocol/fixtures/event-stream-recovery/contract.json):
-// intentd's transport and e2e tests keep an exact single-file copy through the shared
+// The daemon and frontend tests keep exact single-file copies through the shared
 // fixture-copy tool (scripts/lib/fixture-copy.mjs) with commit provenance. The
 // cases themselves are checked by the fixture's own tests under docs/protocol.
 import fs from 'node:fs';
@@ -14,10 +14,15 @@ export const COPY = defineFixtureCopy({
   name: 'event-stream-recovery',
   sourcePath: SOURCE_PATH,
   provenance: 'commit',
+  sameSourceAcrossComponents: true,
   copies: {
     intentd: {
       file: 'crates/intent-transport/src/events/fixtures/event-stream-recovery.json',
       lock: 'crates/intent-transport/src/events/fixtures/event-stream-recovery.lock.json',
+    },
+    'cloudlands-fe': {
+      file: 'src/lib/client/live/__fixtures__/event-stream-recovery.json',
+      lock: 'src/lib/client/live/__fixtures__/event-stream-recovery.lock.json',
     },
   },
   validate: (file) => {
