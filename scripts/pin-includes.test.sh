@@ -50,16 +50,17 @@ if [[ -n "${GH_STUB_FAIL:-}" && "$2" == *"${GH_STUB_FAIL_ON:-}"* ]]; then
 fi
 [[ "$1" == api && $# -eq 4 && "$3" == --jq ]] || { echo "stub: unexpected gh $*" >&2; exit 1; }
 path=${2#repos/}
+owner=${GH_STUB_OWNER:-intent-hq}
 case "$path" in
-  intent-hq/intent/contents/packages/*)
+  "$owner"/intent/contents/packages/*)
     [[ "$path" == *"?ref=main" ]] || { echo "stub: unexpected ref in $path" >&2; exit 1; }
     [[ "$4" == 'select(.type == "submodule") | .sha' ]] || { echo "stub: unexpected contents jq $4" >&2; exit 1; }
-    component=${path#intent-hq/intent/contents/packages/}
+    component=${path#"$owner"/intent/contents/packages/}
     file="$GH_STUB_DIR/pin/${component%%\?*}" ;;
-  intent-hq/*/compare/*)
+  "$owner"/*/compare/*)
     [[ "$4" == .status ]] || { echo "stub: unexpected compare jq $4" >&2; exit 1; }
     repo=${path%%/compare/*}
-    file="$GH_STUB_DIR/compare/${repo#intent-hq/}/${path##*/compare/}" ;;
+    file="$GH_STUB_DIR/compare/${repo#"$owner"/}/${path##*/compare/}" ;;
   *) echo "stub: unexpected gh $*" >&2; exit 1 ;;
 esac
 if [[ ! -f "$file" || "$(<"$file")" == "@404" ]]; then
@@ -82,6 +83,7 @@ reset_stub() {
   echo "$fe_pin" >"$stub_dir/pin/cloudlands-fe"
   echo "$intentd_pin" >"$stub_dir/pin/intentd"
   : >"$temp_dir/gh.log"
+  : >"$temp_dir/git.log"
 }
 
 # compare <component> <base> <head> <status>
@@ -92,6 +94,7 @@ compare() {
 run_script() {
   set +e
   PATH="$bin_dir" GH_STUB_DIR="$stub_dir" GH_TEST_LOG="$temp_dir/gh.log" \
+    GIT_TEST_LOG="$temp_dir/git.log" PIN_INCLUDES_REPOSITORY="${PIN_INCLUDES_REPOSITORY-intent-hq/intent}" \
     "$script_bash" "$script" "$@" >"$temp_dir/stdout" 2>"$temp_dir/stderr"
   status=$?
   set -e
@@ -272,6 +275,7 @@ done
 make_target() {
   set +e
   PATH="$bin_dir:$PATH" GH_STUB_DIR="$stub_dir" GH_TEST_LOG="$temp_dir/gh.log" \
+    PIN_INCLUDES_REPOSITORY=intent-hq/intent \
     make -s -C "$repo_root" --no-print-directory pin-includes "$@" >"$temp_dir/stdout" 2>"$temp_dir/stderr"
   status=$?
   set -e
@@ -300,6 +304,50 @@ if [[ -z "${PIN_INCLUDES_TEST_BASH:-}" ]] && command -v make >/dev/null 2>&1; th
   [[ "$stderr" == *"PAIRS entries must be <component>:<sha>"* ]] || fail "bad PAIRS reported '$stderr'"
   [[ ! -s "$temp_dir/gh.log" ]] || fail "bad PAIRS called gh"
 fi
+
+# The checkout origin selects both the aggregate and its sibling components.
+# Keep this hermetic: no GitHub or real local Git configuration is consulted.
+cat >"$bin_dir/git" <<'SH'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >>"$GIT_TEST_LOG"
+[[ $# -eq 5 && "$1" == -C && "$3 $4 $5" == 'remote get-url origin' ]] || exit 1
+printf '%s\n' "${GIT_STUB_ORIGIN:-}"
+SH
+chmod +x "$bin_dir/git"
+for origin in 'https://github.com/obeavers/intent.git' 'git@github.com:obeavers/intent.git' \
+  'ssh://git@github.com/obeavers/intent.git'; do
+  reset_stub
+  compare cloudlands-fe "$sha" "$fe_pin" ahead
+  compare intentd "$other_sha" "$intentd_pin" ahead
+  PIN_INCLUDES_REPOSITORY='' GIT_STUB_ORIGIN="$origin" GH_STUB_OWNER=obeavers \
+    run_script cloudlands-fe "$sha" intentd "$other_sha"
+  [[ "$status" -eq 0 ]] || fail "fork origin $origin exited $status: $stderr"
+  grep -qxF "api repos/obeavers/intent/contents/packages/cloudlands-fe?ref=main --jq select(.type == \"submodule\") | .sha" \
+    "$temp_dir/gh.log" || fail "fork aggregate was not queried"
+  grep -qxF "api repos/obeavers/cloudlands-fe/compare/$sha...$fe_pin --jq .status" \
+    "$temp_dir/gh.log" || fail "fork frontend was not queried"
+  grep -qxF "api repos/obeavers/intentd/compare/$other_sha...$intentd_pin --jq .status" \
+    "$temp_dir/gh.log" || fail "fork backend was not queried"
+done
+
+# Explicit selection wins over origin; unrelated hosts retain the upstream default.
+for origin in 'https://github.com/obeavers/intent.git' 'https://example.test/obeavers/intent.git'; do
+  reset_stub
+  compare cloudlands-fe "$sha" "$fe_pin" ahead
+  if [[ "$origin" == https://github.com/* ]]; then
+    override=intent-hq/intent
+  else
+    override=''
+  fi
+  PIN_INCLUDES_REPOSITORY="$override" GIT_STUB_ORIGIN="$origin" run_script cloudlands-fe "$sha"
+  [[ "$status" -eq 0 ]] || fail "origin fallback/override exited $status: $stderr"
+  grep -qxF "api repos/intent-hq/intent/contents/packages/cloudlands-fe?ref=main --jq select(.type == \"submodule\") | .sha" \
+    "$temp_dir/gh.log" || fail "upstream fallback/override was not queried"
+done
+reset_stub
+PIN_INCLUDES_REPOSITORY='not/a/repository' run_script cloudlands-fe "$sha"
+[[ "$status" -eq 2 && ! -s "$temp_dir/gh.log" ]] || fail "invalid override reached GitHub"
+rm "$bin_dir/git"
 
 [[ -z "${PIN_INCLUDES_TEST_BASH:-}" ]] || exit 0
 

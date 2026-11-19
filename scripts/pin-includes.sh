@@ -29,10 +29,12 @@
 # commit, or a commit that is not on the component's main. gh's own error text
 # is appended to the message on 1 and 4.
 # Must parse and run under Bash 3.2 (stock macOS).
+# PIN_INCLUDES_REPOSITORY overrides the monorepo as owner/name. Otherwise a
+# recognized GitHub origin of this checkout supplies it; without one, the
+# upstream intent-hq/intent default applies. Components use the same owner.
 
 set -euo pipefail
 
-monorepo=intent-hq/intent
 monorepo_ref=main
 
 usage() {
@@ -59,6 +61,25 @@ trap 'rm -f "$gh_err"' EXIT
 
 script_dir=.
 [[ "${BASH_SOURCE[0]}" == */* ]] && script_dir=${BASH_SOURCE[0]%/*}
+
+monorepo=${PIN_INCLUDES_REPOSITORY:-}
+if [[ -z "$monorepo" ]] && command -v git >/dev/null 2>&1; then
+  origin=$(git -C "$script_dir/.." remote get-url origin 2>/dev/null || true)
+  case "$origin" in
+    https://github.com/*) monorepo=${origin#https://github.com/} ;;
+    git@github.com:*) monorepo=${origin#git@github.com:} ;;
+    ssh://git@github.com/*) monorepo=${origin#ssh://git@github.com/} ;;
+  esac
+  monorepo=${monorepo%.git}
+fi
+monorepo=${monorepo:-intent-hq/intent}
+if [[ ! "$monorepo" =~ ^[A-Za-z0-9][A-Za-z0-9-]*/[A-Za-z0-9_.-]+$ ]] ||
+   [[ "${monorepo#*/}" == . || "${monorepo#*/}" == .. ]]; then
+  echo "pin-includes: expected a GitHub repository in owner/name form" >&2
+  exit 2
+fi
+component_owner=${monorepo%%/*}
+
 # shellcheck source=scripts/lib/gh-transient.sh
 . "$script_dir/lib/gh-transient.sh"
 transient_pattern=$gh_transient_pattern
@@ -117,7 +138,7 @@ waiting=()
 for ((i = 0; i < ${#components[@]}; i++)); do
   component=${components[i]}
   sha=${shas[i]}
-  repo=intent-hq/$component
+  repo=$component_owner/$component
   read_pin "$component"
   status=$(compare_status "$repo" "$sha" "$pin")
   case "$status" in

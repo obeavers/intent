@@ -1,10 +1,10 @@
 [submodule "packages/intentd"]
 	path = packages/intentd
-	url = https://github.com/intent-hq/intentd.git
+	url = https://github.com/obeavers/intentd.git
 	branch = main
 [submodule "packages/cloudlands-fe"]
 	path = packages/cloudlands-fe
-	url = https://github.com/intent-hq/cloudlands-fe.git
+	url = https://github.com/obeavers/cloudlands-fe.git
 	branch = main
 [submodule "packages/ios"]
 	path = packages/ios
