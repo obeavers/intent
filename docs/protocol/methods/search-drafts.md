@@ -15,7 +15,7 @@ Routing-only `workspaceId?` additions below are [prepared contract fields](../wo
 | search.messages | query (req), workspaceId?, preferWorkspaceId?, agentId?, role?, limit?, requestId? | { requestId, matches: MessageMatch[] } — **FTS5/bm25-ranked** full-text search over persisted agent transcripts (BE owns session storage). `workspaceId` is **optional**: absent → **global** search across all workspaces; present → hard scope filter. `preferWorkspaceId` is a **soft ranking boost** — matches from that workspace outrank equally-relevant matches from other workspaces, but results stay global (nothing is excluded). Matches from **archived** workspaces carry a fixed soft rank penalty, giving the default tier order preferred workspace → other active → archived (relevance can still override). `agentId`/`role` narrow further (hard filters); `limit` caps the match count (absent → 50, larger than 200 → 200, negative → 0; behaviour change: absent or negative meant no cap). Semantics block below |
 | search.events | query (req), workspaceId?, limit?, requestId? | { requestId, matches: EventMatch[] } — over the BE event log. `limit` caps the match count (absent → 50, larger than 200 → 200, negative → 0; behaviour change: absent meant no cap) |
 | search.notes | query (req), workspaceId?, preferWorkspaceId?, limit?, includeArchived?, requestId?, nextToken? | { requestId, matches: NoteMatch[], indexed: true, nextToken: string \| null } — **FTS5/bm25-ranked** title, body and tag search across accessible workspaces; always inline, one page at a time. `workspaceId` hard-filters; `preferWorkspaceId` softly boosts. `limit` is the page size (absent → 50, larger than 200 → 200; behaviour change: absent meant no cap); `nextToken` continues the ranked list; `includeArchived` absent → true (individual note archives). Indexed contract and compatibility below |
-| search.codebase | workspaceId (req), query (req), requestId? | { requestId, matches: CodebaseMatch[] } — **ripgrep/symbol-backed** search. auggie exposes no structured codebase-retrieval CLI, so `AuggieContextEngine::retrieve()` returns `Unavailable` instantly and ripgrep is the backing; the `ContextEngine` trait is retained as forward-looking infra |
+| search.codebase | workspaceId (req), query (req), requestId? | { requestId, matches: CodebaseMatch[], readBasis?: QueryReadBasis } — ripgrep/symbol-backed by default. An explicitly installed recorded-code context engine can return the optional basis below; its availability is not implied by this field |
 | search.cancel | requestId (req), workspaceId? | { ok: true } — aborts an in-flight search by its `requestId` |
 
 Memories search is **daemon-internal (no wire method)**: there is no `search.memories` router arm — the memories store is queried inside the daemon (agent memory recall, §5.22), never by a client RPC.
@@ -205,6 +205,30 @@ result (`matches`/`files` + `truncated`). Large or long-running searches are **s
 method returns `{ requestId }` promptly and the daemon pushes incremental `search:result`
 batches followed by a terminal `search:done` (§6.5), correlated by `requestId`. Either way the
 final, complete answer is the `search:done` event (or the inline result when not streamed).
+
+**Recorded-code read basis (prepared additive contract).** When a context engine establishes
+a named recorded-state basis, `search.codebase` preserves it as `readBasis` on the inline
+result, or on the streamed acknowledgement and every `search:result` / `search:done` frame.
+The same request uses the same basis throughout. Legacy engines omit the field entirely;
+an absent basis makes no claim about recorded-state coverage. This contract does not enable
+the experimental Atomic context engine or advertise a new search option.
+
+`QueryReadBasis` contains `repositoryId`, `rootId`, `rootEpoch`, `sourceState`, nullable
+`derivedState`, `provenance: "importedGitSnapshot"`, `indexEpoch`, nullable `taskRevision`,
+nullable `sourceEventWatermark` and `projectorWatermark`, `queryVersion`, `ontologyVersion`,
+`visibilityDigest`, `ignorePolicyDigest`, `stale`, `coverage` and `truncation`.
+`sourceState` names the repository and exact Git `commit` and `tree`; native derived state
+is a separately tagged identity. `indexEpoch` is an opaque generation nonce, not an event
+watermark. Unknown watermarks stay `null`; clients must not interpret them as zero.
+
+`coverage` carries `candidateFiles`, `readFiles`, `skippedFiles`,
+`unsupportedGrammarFiles`, `sourceBytes` and `complete`. `truncation` is an array of
+`"resultLimit"`, `"byteLimit"`, `"sourceReadBudget"` or `"timeBudget"`. These describe
+the authorized input scope and query budgets; a missing relationship does not prove no
+relationship exists. Results describe the named recorded state, including when the live
+working files have changed. Svelte has file-level coverage only at the current native pin.
+The serialized basis is bounded to 16 KiB before delivery, in addition to the match budget.
+An explicit recorded-code query cannot silently substitute a search of live files.
 
 **Size bounds (read payload budget).** An inline reply stays under the daemon's 500 KiB read
 payload budget. `search.inFiles` stops collecting once its matches would serialize past

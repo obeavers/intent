@@ -33,6 +33,18 @@ The note subscription channel gained the same projection in v8.2 — see the `no
 Task-note rows with `dependsOn` edges carry the computed `metadata.task.unmetDependsOn` (within v6.8, monorepo#1979; presence-detected, omitted when empty — see §5.4 task.setRelations).
 The field is guaranteed only on read/push shapes (`note.get`/`note.list` and the subscription snapshots/deltas they serve); notes embedded in mutation *responses* (e.g. `task.updateNoteStatus`'s `note`, `note.update`'s `note`) may omit it — clients should not patch caches from mutation responses expecting the projection
 
+**Prepared work requirements.** Task metadata may retain an experimental
+`workDefinition` with explicit `purpose` (`source`, `research`, `review`), `criteria`
+and `files`. Each criterion requirement names its exact `acceptanceCriteria` index,
+the SHA-256 `textDigest` of that text and one or more `requiredKinds`. File declarations
+name an exact `rootId`, relative slash `path`, and `role` (`reference`, `in-scope`,
+`out-of-scope`). These declarations grant no access and assert no check outcome.
+The immutable task revision captures them prospectively; later edits cannot rewrite
+an admitted turn. Missing definitions remain undeclared. Mismatched text digests,
+duplicate criteria/kinds/paths and traversal paths are refused. A completed task
+must be reopened before changing its governing requirements. No planning capability
+or normal product entry point is advertised by the presence of this field.
+
 ```json
 // → request
 { "jsonrpc":"2.0","id":7,"method":"note.add",
@@ -700,11 +712,13 @@ non-authoritative.
 
 | Method | Params | Result |
 | --- | --- | --- |
+| task.configureWorkDefinition | workspaceId (req), noteId (req), expectedNoteVersion (req,int), acceptanceCriteria (req,string[]), workDefinition (req, TaskWorkDefinition or null) | { note, taskRevision } — `taskPlanning: 1`; authenticated human only. One strict note CAS persists the criterion source/requirements and captures the canonical task revision atomically; see below. |
+| task.workEvidence | workspaceId (req), noteId (req), query (req, strict runs/run object) | Bounded member-authorized original confirmed-run index or first-admission evidence summaries; requires `taskEvidenceRead: 1`. See below. |
 | task.updateStatus | noteId (req), taskText (req), status (req: `done` \| `todo` \| `in-progress`) | { ok, noteId, taskText, status } — rewrites the checkbox marker of the first checkbox line in `noteId` whose text matches `taskText` (exact match preferred, else the first line containing it) and emits `note:updated` for `noteId`. Any other `status` word → `-32603` (`Status must be 'done', 'todo', or 'in-progress'`); empty `taskText` → `-32603`. **Linked line ([intent-hq/intent#4255](https://github.com/intent-hq/intent/issues/4255)):** when the matched line links a task note (`[label](intent://local/task/{id})`), the write is **redirected to the task note** instead of the checkbox — see "Linked checkboxes are projections of the task note" below. The result echoes the requested `status` word either way |
 | task.updateNoteStatus | noteId (req), status (req: `not_started` \| `waiting` \| `discussion_needed` \| `blocked` \| `in_progress` \| `review_required` \| `complete` \| `cancelled`), expectedVersion? | { ok, noteId, status, note, advisory? } — details below the table. |
 | task.update | noteId (req), line (req,int), text?, status? (`todo` \| `in-progress` \| `done`), expected? | { ok, noteId, lineNumber, previousText, newText, status } (atomic single-line edit; at least one of `text` / `status` required; `expected` mismatch → `-32603 Conflict detected …` before anything is written). **Linked line (intent-hq/intent#4255):** when line `line` links a task note, a `status` write is redirected to the task note and the line's marker follows via materialization; a `text` edit on the same call lands in ONE parent write together with the materialized marker. The linked task is resolved from the **post-edit** line (the line after `text` is applied): a `text` that retargets the link from task A to task B sends the `status` write to **B** (A is untouched — it is no longer linked here) and renders B's marker, a `text`-only edit that changes the link renders the new target's **current** status marker in the same parent write, and a post-edit line with no link keeps the raw checkbox write — see "Linked checkboxes are projections of the task note" below |
 | task.getMyTask | taskNoteId (req) | task note w/ metadata, dependencies, acceptance criteria. `taskMetadata` carries the stored `dependsOn?` / `conflictsWith?` relation lists and the result carries the computed `unmetDependsOn?` (v6.8; all presence-detected, omitted when empty) — see task.setRelations |
-| task.markAsTask | noteId (req), status (req), acceptanceCriteria?, effort?, dependsOn?, conflictsWith? | { ok, ... } — always emits `note:updated` (the task-ness/metadata flip; without it a mark was invisible to note-driven refetches until the next unrelated note write). On a note that was **not** already a task it additionally emits `task:created` (§6.5). Re-marking an **existing** task is a status move instead: a real status change emits `task:status-changed` + `task:ready-tasks-changed` (the same pair `task.updateNoteStatus` publishes) and **no** `task:created`; re-marking at the same status emits neither — unless the re-mark's `dependsOn?` param actually changes the list, which recomputes + emits `task:ready-tasks-changed` with the `relations-changed` trigger (monorepo#1981), same as `task.setRelations`. `dependsOn?` / `conflictsWith?` (v6.8) seed/replace the task's relation lists under the same validation and cycle check as `task.setRelations`; omitted params leave an existing task's relations untouched. Every mark also **materializes** `status` onto the checkbox lines linking the note (one `note:updated` per rewritten parent, emitted after the task's own `note:updated` and before `task:created` / `task:status-changed`) — see "Linked checkboxes are projections of the task note" below |
+| task.markAsTask | noteId (req), status (req), acceptanceCriteria?, effort?, dependsOn?, conflictsWith? | { ok, ... } — always emits `note:updated` (the task-ness/metadata flip; without it a mark was invisible to note-driven refetches until the next unrelated note write). On a note that was **not** already a task it additionally emits `task:created` (§6.5). Re-marking an **existing** task is a status move instead: a real status change emits `task:status-changed` + `task:ready-tasks-changed` (the same pair `task.updateNoteStatus` publishes) and **no** `task:created`; re-marking at the same status emits neither — unless the re-mark's `dependsOn?` param actually changes the list, which recomputes + emits `task:ready-tasks-changed` with the `relations-changed` trigger (monorepo#1981), same as `task.setRelations`. `dependsOn?` / `conflictsWith?` (v6.8) seed/replace the task's relation lists under the same validation and cycle check as `task.setRelations`; omitted params leave an existing task's relations untouched. A retained experimental `workDefinition` is preserved and must still match any replacement criteria. Every mark also **materializes** `status` onto the checkbox lines linking the note (one `note:updated` per rewritten parent, emitted after the task's own `note:updated` and before `task:created` / `task:status-changed`) — see "Linked checkboxes are projections of the task note" below |
 | task.setRelations | noteId (req), dependsOn?, conflictsWith? | { ok, noteId, dependsOn, conflictsWith } *(v6.8)* — details below the table. |
 | task.convertBlocks | noteId (req) | { ok, convertedCount, createdNoteIds, createdTasks, warnings } — each converted `@@@task` block becomes a child task note emitting `note:created` + `task:created` (§6.5). The fence line takes optional **header attributes** (v6.11, intentd#1128/#1130/#1133): `@@@task key=<token> dependsOn=<a,b> conflictsWith=<c> effort=<token>` — whitespace-separated `name=value` pairs after the keyword, bare tokens (no quoting), `dependsOn`/`conflictsWith` comma-separated and whitespace-tolerant around commas. Each `dependsOn`/`conflictsWith` reference resolves in order: sibling block `key=`s in the same conversion → exact sibling block titles → existing task-note ids in the workspace; resolved edges are written through the same validator as `task.setRelations` (cycle + tree ancestor/descendant checks), and `effort` seeds the task's `estimatedEffort`. **Convert-with-warnings:** conversion never fails on bad attributes — every block still converts, and each header parse issue, unknown/duplicate/empty attribute, unresolvable or ambiguous reference, or validator-rejected edge is skipped with one entry in `warnings` naming the block and the problem. `createdTasks` is `[{ key?, title, noteId }]` in block order, parallel to `createdNoteIds` (`key` present only when authored; idempotently reused existing children are not listed — a reused block's `effort` is dropped with a warning). `createdTasks` / `warnings` are always present (empty arrays when nothing applies) |
 | task.createPrerequisite | dependentNoteId (req), title (req), content?, status? | { ok, ... } — the prerequisite note is born a task, emitting `note:created` + `task:created` (§6.5). `-32602` when `content` is the line-numbered `note.read` display (see "Numbered `note.read` display rejected on content writes", §5.2); nothing is created |
@@ -719,6 +733,67 @@ Either way it then **materializes** the status onto every checkbox line in the w
 **Caller-aware terminal guard** (within 9.13; additive, presence-detected): when the task is already `complete` / `cancelled` and the write is attributed to the task's OWN linked agent — the MCP `ws.task.updateNoteStatus` binding and the linked-checkbox redirects of `ws.task.updateStatus` / `ws.task.update` pass the calling agent; the session's `taskNoteId` names the task, or the agent is in the task's `assignedAgentIds` — a move to any other status is refused as a no-op: the task is not written and no `task:status-changed` / `task:ready-tasks-changed` / dependent `note:updated` fires (the checkbox materialization still runs, so a linked marker that had drifted from the terminal status is healed with one parent write + `note:updated`; an already-correct marker stays untouched), and the response answers `ok: true`, the **unchanged** `status` / `note`, plus `advisory` (`"Task is <complete|cancelled>; a task's own linked agent cannot reopen it. Ask the coordinator or user to reopen the task if more work is needed."`).
 `advisory` is **absent** (never `null`) on every write that went through, so pre-guard responses are byte-identical.
 The router path carries no caller and is never guarded — coordinators, verifiers, and users reopen tasks exactly as before, as does any agent not linked to the task; a same-status write by the linked agent stays the ordinary no-op with no `advisory`
+
+**Reviewed task planning (`taskPlanning: 1`).**
+
+`task.configureWorkDefinition` preserves the exact bytes of every supplied
+criterion string. The daemon recomputes each requirement's `textDigest` from
+`acceptanceCriteria[index]`, validates the required-kind/file declarations and
+returns the saved note plus its exact `TaskRevisionRef` (`workspaceId`, `noteId`,
+`rev`, `digest`, `projectionSchemaVersion`). A stale `expectedNoteVersion` is a
+`-32005` Conflict with the current note and no partial definition/revision write.
+Agents cannot call this method as the human, and completed tasks must be reopened
+before changing requirements. `workDefinition: null` explicitly clears declared
+requirements without silently clearing the supplied criteria.
+
+The client reviews an immutable draft before confirmation, replaces it with the
+canonical saved response and requires a separate explicit Run action. Any draft
+edit invalidates that confirmation. For each locally created agent, send the
+unchanged `taskRevision` as `agent.create.expectedTaskRevision` and set
+`metadata.taskNoteId` to the same note. The daemon retains the original source in
+the agent allocation transaction and checks it again at first-turn admission;
+it never silently replaces it with the latest task. Incidental note bookkeeping
+may preserve the original governing source, but changed requirements or a task
+assignment replaced and later restored refuse the old confirmation. A terminal
+task cannot start confirmed work. Confirmed execution on an execution node is
+currently refused before agent allocation; there is no unfenced remote fallback.
+
+These choices declare intent. File references grant no filesystem access, and
+neither configuration nor a first-turn source pin establishes criterion success,
+independent review, task completion or Atomic activation.
+
+**Retained first-turn evidence (`taskEvidenceRead: 1`).**
+
+`task.workEvidence` is an ordinary authorized read, independent of experimental
+work subscriptions and native source capabilities. Supply
+`query: { kind: "runs", after?: opaqueCursor, limit?: 1..20 }` for the retained
+confirmed-run index, including historical agents no longer assigned to the task.
+Each row pins its original `taskRevision`, `agentId`, and confirmation time.
+`admission.status: "awaitingFirstAdmission"` means no actual first admission has
+been retained; it proves neither a clean run nor process termination.
+
+An admitted row identifies its exact `bindingId`, `turnAttempt`, and admission
+time. Select it with `query: { kind: "run", agentId, page?: { limit?: 1..20,
+after?: { contributions?: opaqueCursor, effects?: opaqueCursor } } }`. Detail
+requires the original retained confirmation, first-admission claim, matching turn
+admission, and exact binding. It excludes later turns, current-agent/task fallback,
+and facts linked only by overlapping paths or task status. Cursor scope is bound
+to the original query and run; a foreign cursor is refused.
+
+The result contains bounded source previews, a public root identity without host
+locators, original contribution identities with their retained provenance, and
+committed SQL effect references linked to this exact binding. A SQL effect is not
+a task-completion or source-adoption receipt. Recording governance in a shared
+working copy does not prove complete authorship. No full task body, private authority,
+raw binding, callback result, or receipt blob is returned. Source previews include
+truncation/omission markers and cannot replace exact source bytes. Checks, reviews,
+and settlement currently return `unavailable/noQualifiedRunLinkage`; neither an
+empty retained page nor a green task label supplies those missing proofs.
+
+Every response carries a retained-source watermark and query scope; each index
+page reports returned records, retained-page completeness, and byte truncation.
+The whole result is limited to 128 KiB. This endpoint performs no native work,
+polling, task write, confirmation, adoption, or completion.
 
 **`task.setRelations` details.**
 

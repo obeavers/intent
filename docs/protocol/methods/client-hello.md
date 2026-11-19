@@ -4,6 +4,28 @@ Routing-only `workspaceId?` additions below are [prepared contract fields](../wo
 
 ### 5.17 `client.hello` handshake & stable client identity
 
+**Reviewed task planning.** Exact integer `server.capabilities.taskPlanning: 1`
+advertises the human-only `task.configureWorkDefinition` note CAS and durable
+local `agent.create.expectedTaskRevision` first-turn source pin described in
+[task planning](notes-tasks.md#54-task). Clients must gate the review/confirm/run
+flow on this capability and cannot fall back to an unfenced create against an
+older server. It advertises neither Atomic workspace activation nor source
+execution/reviewer qualification. Confirmed execution-node launch is unavailable.
+
+**Retained task evidence reads.** Exact integer
+`server.capabilities.taskEvidenceRead: 1` advertises the bounded
+[`task.workEvidence`](notes-tasks.md#54-task) confirmed-run index and exact original
+first-turn summaries. It grants no workspace access, execution, source custody,
+check/review qualification, human confirmation, adoption, or completion authority.
+It is independent of `taskPlanning` and experimental work subscriptions.
+
+**Experimental memory reads.** Exact integer
+`server.capabilities.experimentalMemoryRead: 1` is present only when daemon
+composition explicitly opts into the [experimental ledger-memory reads](memory.md).
+It advertises `memory.list` and `memory.context` only. Ordinary deployments omit
+it. It grants no workspace access, acceptance, selection, delivery, use or source
+authority; clients retain the exact acknowledged connection and principal.
+
 **Startup readiness (prepared).** Exact integer
 `server.capabilities.startupStatus: 1` advertises the full
 [startup contract](../startup-readiness.md). During bootstrap, hello returns

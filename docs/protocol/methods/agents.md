@@ -4,6 +4,19 @@ Routing-only `workspaceId?` additions below are [prepared contract fields](../wo
 
 ### 5.5 `agent.*`
 
+**Confirmed first-turn source (`taskPlanning: 1`).** `agent.create` accepts
+optional `expectedTaskRevision: TaskRevisionRef` for an authenticated human's
+reviewed [task plan](notes-tasks.md#54-task). It must match `workspaceId` and
+`metadata.taskNoteId` exactly; `null`, malformed data, changed governing source
+and a replaced first assignment refuse. The original source pin is retained in
+the same transaction as the agent row, then consumed by its actual first-turn
+admission without a latest-task fallback. An idempotent create replay also checks
+the current assignment/source rather than treating cached creation JSON as a
+fresh launch. Local execution is supported; confirmed execution-node placement
+is refused before allocation until its source custody is qualified. Omission
+preserves ordinary `agent.create` behavior. The reference is a concurrency
+constraint, not execution permission, criterion evidence or task completion.
+
 The largest namespace. Every `agent.*` method is served daemon-primary by `intent-services` via the `intent-transport` router; no renderer-owned agent transport remains. `agentId` values are **server-assigned** and of the form `agent-{uuid}`.
 
 | Method | Params | Result |
