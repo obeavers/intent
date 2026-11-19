@@ -4,6 +4,9 @@
 # Local scratch dir for worktree commit-message drafts (never committed)
 .wt-commit-details/
 
+# Verified local source checkpoints and isolated integration checkouts
+.reconciliation/
+
 # macOS Finder metadata
 .DS_Store
 
