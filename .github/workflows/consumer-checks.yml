@@ -129,7 +129,7 @@ jobs:
       contents: read
     env:
       COMPONENT: ${{ inputs.component }}
-      COMPONENT_REPOSITORY: ${{ inputs.self-test && format('intent-hq/{0}', inputs.component) || github.repository }}
+      COMPONENT_REPOSITORY: ${{ inputs.self-test && format('{0}/{1}', github.repository_owner, inputs.component) || github.repository }}
       HEAD_SHA: ${{ inputs.head-sha || github.sha }}
       # crates.io blips ("[16] Error in the HTTP2 framing layer" fetching
       # serde_with ejected intentd#3384 from the merge queue): one connection

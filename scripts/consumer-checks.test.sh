@@ -265,7 +265,7 @@ cp "$script" "$fixture/scripts/consumer-checks.sh"
 printf '[toolchain]\npath = "%s"\n' "$fixture/attacker" >"$fixture/packages/intentd/rust-toolchain.toml"
 marker_log=$fixture/marker.log
 trusted_log=$fixture/trusted.log
-for tool in cargo node; do
+for tool in cargo node python3; do
   printf '#!/bin/sh\necho "attacker %s $*" >>"%s"\n' "$tool" "$marker_log" >"$fixture/attacker/bin/$tool"
 done
 # A metacharacter-free recipe like `node scripts/x.mjs` skips the shell: stock
@@ -285,6 +285,14 @@ case "\$1" in
   scripts/check-protocol-catalog.mjs) echo "trusted checker: catalog drift" >&2; exit 1 ;;
 esac
 EOF
+cat >"$fixture/trusted/bin/python3" <<EOF
+#!/bin/sh
+echo "trusted python3 \$*" >>"$trusted_log"
+case ":\$PATH:" in
+  *":$fixture/attacker/bin:"*|*":$fixture/attacker/bin/:"*)
+    echo "attacker bin on recipe PATH: python3 \$*" >>"$marker_log" ;;
+esac
+EOF
 cat >"$fixture/trusted/bin/rustup" <<'EOF'
 #!/bin/sh
 [ "$1" = which ] && [ "$2" = cargo ] || exit 1
@@ -293,7 +301,8 @@ toolchain_path=$(sed -n 's/^path = "\(.*\)"$/\1/p' rust-toolchain.toml)
 echo "$toolchain_path/bin/cargo"
 EOF
 printf '#!/bin/sh\necho "trusted docs-check" >>"%s"\n' "$trusted_log" >"$fixture/scripts/docs-check.sh"
-chmod +x "$fixture/attacker/bin/cargo" "$fixture/attacker/bin/node" "$fixture/trusted/bin/node" \
+chmod +x "$fixture/attacker/bin/cargo" "$fixture/attacker/bin/node" "$fixture/attacker/bin/python3" \
+  "$fixture/trusted/bin/node" "$fixture/trusted/bin/python3" \
   "$fixture/trusted/bin/rustup" "$fixture/scripts/docs-check.sh"
 run_real_make() {
   : >"$marker_log"
@@ -309,23 +318,27 @@ run_real_make "$make_bin" --no-print-directory check-protocol-catalog
 grep -q -e '^attacker node scripts/check-protocol-catalog.mjs$' \
   -e '^attacker bin on recipe PATH: node scripts/check-protocol-catalog.mjs$' "$marker_log" ||
   fail "fixture control: an unhardened make did not expose the attacker's bin to the recipe (rustup stub or Makefile PATH prepend changed?); exit $real_status:"$'\n'"$real_output"$'\n'"$(cat "$marker_log")"
-# The node calls a real run must make come from the Makefile itself: a dry run
+run_real_make "$make_bin" --no-print-directory check-atomic-delivery-plan
+grep -q -e '^attacker python3 -I -B -S scripts/test-check-atomic-delivery-plan.py$' \
+  -e '^attacker bin on recipe PATH: python3 -I -B -S scripts/test-check-atomic-delivery-plan.py$' "$marker_log" ||
+  fail "fixture control: an unhardened make did not expose the attacker's bin to Python; exit $real_status:"$'\n'"$real_output"$'\n'"$(cat "$marker_log")"
+# The node/Python calls a real run must make come from the Makefile itself: a dry run
 # (`make -n`, which the runner word-splits out of $MAKE) of the same make calls
-# prints every recipe, and each `node ...` line is replayed through sh with
-# `node` defined to log the way the trusted node does, so quoting and globs
+# prints every recipe, and each interpreter line is replayed through sh with
+# functions that log like the trusted tools, so quoting and globs
 # expand exactly as they do for the real recipe.
 run_real_make env MAKE="$make_bin -n" "$script_bash" scripts/consumer-checks.sh --context upstream
 upstream_dry_run=$real_output
-expected_node_log=$fixture/expected-node.log
-: >"$expected_node_log"
+expected_tool_log=$fixture/expected-tools.log
+: >"$expected_tool_log"
 while IFS= read -r recipe_line; do
   case "$recipe_line" in
-    node\ *) (cd "$fixture" && sh -c 'node() { echo "trusted node $*"; }; '"$recipe_line") >>"$expected_node_log" ||
+    node\ *|python3\ *) (cd "$fixture" && sh -c 'node() { echo "trusted node $*"; }; python3() { echo "trusted python3 $*"; }; '"$recipe_line") >>"$expected_tool_log" ||
       fail "could not replay dry-run recipe line: $recipe_line" ;;
   esac
 done <<<"$real_output"
-[ -s "$expected_node_log" ] ||
-  fail "the dry run listed no node recipe lines (make -n output changed?):"$'\n'"$real_output"
+[ -s "$expected_tool_log" ] ||
+  fail "the dry run listed no interpreter recipe lines (make -n output changed?):"$'\n'"$real_output"
 run_real_make env MAKE="$make_bin" "$script_bash" scripts/consumer-checks.sh --context upstream
 [ "$real_status" -eq 1 ] ||
   fail "real-make run exited $real_status (expected 1: the trusted check-protocol-catalog fails):"$'\n'"$real_output"
@@ -333,9 +346,13 @@ run_real_make env MAKE="$make_bin" "$script_bash" scripts/consumer-checks.sh --c
   fail "a caller-controlled toolchain executable ran under consumer-checks:"$'\n'"$(cat "$marker_log")"$'\n'"$real_output"
 grep -q '^trusted node scripts/check-protocol-catalog.mjs$' "$trusted_log" ||
   fail "the trusted node did not run check-protocol-catalog:"$'\n'"$(cat "$trusted_log")"
-# Every node call the Makefile recipes make ran, each with the trusted node.
-node_calls_diff=$(diff <(sort "$expected_node_log") <(grep '^trusted node ' "$trusted_log" | sort)) ||
-  fail "the trusted node calls differ from the Makefile recipes' node calls (< expected from make -n, > ran):"$'\n'"$node_calls_diff"
+# Every interpreter call the Makefile recipes make ran with its trusted tool.
+tool_calls_diff=$(diff <(sort "$expected_tool_log") <(grep -E '^trusted (node|python3) ' "$trusted_log" | sort)) ||
+  fail "the trusted interpreter calls differ from the Makefile recipes (< expected from make -n, > ran):"$'\n'"$tool_calls_diff"
+for guard in scripts/test-check-atomic-delivery-plan.py scripts/check-atomic-delivery-plan.py; do
+  grep -qFx "trusted python3 -I -B -S $guard" "$trusted_log" ||
+    fail "the Atomic plan guard and its tests did not run with isolated trusted Python:"$'\n'"$(cat "$trusted_log")"
+done
 if ! grep -qFx 'trusted node scripts/check-doc-line-length.mjs' "$trusted_log" ||
   ! grep -qFx 'trusted node --test scripts/check-doc-line-length.test.mjs' "$trusted_log"; then
   fail "the protocol line-length ratchet and its tests did not run with the trusted node:"$'\n'"$(cat "$trusted_log")"
