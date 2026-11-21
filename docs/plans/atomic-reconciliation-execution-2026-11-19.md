@@ -1,3 +1,78 @@
+# Latest upstream reconciliation — 20 November 2026
+
+The continuation baseline now includes the following captured upstream snapshots
+alongside the prepared Atomic implementation. These are a fixed integration
+cutoff; upstream may continue advancing while qualification runs. The aggregate
+commit's gitlinks identify the exact reconciled component revisions.
+
+| Repository | Captured upstream main | Incoming commits incorporated |
+| --- | --- | --- |
+| intent | 5f6899efce6f18d02e2b03326da243c3e3a9f9a5 | 93 |
+| intentd | 38e858ae594938510bb7da08a621df2a630b9efe | 45 |
+| cloudlands-fe | 9041a12f56be47a4b3749a56dca786468d26c744 | 59 |
+
+The backend now uses the upstream 0.11.261 baseline, and the frontend uses
+2.361.4. The prepared task evidence, Atomic host staging, capability gates,
+frontend controls and all 130 Atomic keys in each locale are retained. Incoming
+passkey staging and upstream locale values are also retained. Original dirty
+source trees remain preserved; this refresh does not import the deferred older
+experimental backend graph or close later stages of the governing plan.
+
+Upstream's Postgres migration 0008_tenant_writer.sql remains unchanged. The
+unpublished tracer migration is now 0009_tracer_evidence.sql, byte-identical to
+its prior contents; SQLite remains 0197. Evidence reads use the upstream
+repeatable-read snapshot API, and mutations retain its typed tenant writer lock.
+The compatibility harness received lint cleanup without changing any of its
+191 expected JSON files or assertions. The combined protocol catalog now counts
+517 dispatchable names, comprising 462 router and 55 fast-path methods, plus six
+reverse RPC names; the nine prepared Atomic additions remain gated.
+
+The root merge at 43677965 passed all 20 consumer checks against backend
+0911ec439b0eac3a550902b4631422784731dde3 and frontend
+55a341ba833abb9c3211447606aa6d760dae6625. Later backend follow-ups change only
+the isolated host lock metadata and compatibility test-harness linting. The final
+pin check and publication receipt are retained with this refresh's evidence.
+
+Selected validation during this refresh:
+
+- All 361 protected definitions and 26 mutation tests pass. Plans, delivery-map
+  requirements and canonical event-stream contract are unchanged.
+- Root helper selection and runner tests pass: 81 passed and 14 skipped, using a
+  canonical temporary-directory path to avoid macOS /var aliases. Callback tests
+  add six passes and 24 Linux-only skips. Consumer isolation and fork pin helper
+  checks pass under Bash 5 and stock Bash 3.2; the changed workflow passes actionlint.
+- The backend Store ledger passes 11 tests at 0911ec4. Postgres source checks pass
+  29 and five tests, and PgStore units pass nine at 911fc65. Their production and
+  Store source is unchanged by the later lockfile/harness-only follow-ups.
+- Final backend 27e1957 passes locked, offline, all-target workspace Clippy with
+  both atomic-tracer and intent-store/postgres features and warnings denied.
+- Frontend 55a341b passes 1,159 tests across all 40 changed unit-test files, plus
+  formatting, ESLint, package-script checks, knip, Svelte checking with zero errors,
+  renderer TypeScript and canonical fixture checks.
+
+The broader gates are not green. The initial root script selection was stopped
+with exit 130 after failures; a receipt-selection test bug was reproduced on
+pristine upstream, as were macOS canonical-path comparison failures. The unchanged
+Linux OS source in install-ci-bash3.sh also trips ShellCheck SC1091 on this Mac.
+The canonical Rust changed-test selector chooses the full suite, whose actual
+attempt exits 2 because the descriptor-pinned callback fixture requires Linux
+x64. No fixture bypass was used.
+
+Frontend static and changed verification timed out at 360 and 600 seconds during
+main TypeScript without compiler diagnostics. Architecture checks also hit the
+existing tsx IPC denial, and workflow lint retains the two unchanged SC2329
+findings. Main/preload TypeScript, test-type baselines, the full unit/component
+suite and Electron/WSS acceptance remain unqualified for this cohort. Live
+Postgres, real provider/native-host T1 execution, broader platform qualification
+and normal Atomic activation remain open.
+
+Refresh receipts, exact command exits and pristine-upstream comparisons are under
+.reconciliation/evidence/upstream-refresh-20261120 in the original workspace.
+Earlier sections below retain their own source identities and validation limits;
+their 0008 tracer migration and older main references are historical.
+
+---
+
 > Current integration direction — own forks' main branches (19 November 2026)
 >
 > The implementation baseline is obeavers/intent, obeavers/intentd and
