@@ -253,7 +253,10 @@ the other reasons (`api-error`, `template-missing`, `bootstrap-failed`,
 `placementError.code`. With [Agent37 entries](./methods/nodes.md#cloud-machines-on-agent37)
 (`"agent37"` in `providerKinds`), `provider` can be `"agent37"`, and
 `cloud-machine-unavailable` adds the `-32603` reason `no-capacity` (Agent37 had
-no room in the entry's region; retryable). No error carries a provider key or token.
+no room in the entry's region; retryable). With [Vercel entries](./methods/nodes.md#cloud-machines-on-vercel)
+(`"vercel"` in `providerKinds`), `provider` can be `"vercel"`, with no new
+reason: a missing Vercel project is `project-missing` and a token that cannot
+reach the team is `permission-denied`. No error carries a provider key or token.
 
 ### Truncated note read errors
 
@@ -309,6 +312,15 @@ the agent's machine (not connected, below nodeProtocol 14, or no confirmation wi
 `-32003` means the caller lacks send authority for the target agent. No error
 message or `data` ever contains the submitted value. The agent-facing
 `secret-unavailable` tool error is described in §5.56.
+
+### Unsloth model switch confirmation
+
+A user-origin `agent.sendMessage` whose turn would make the managed Unsloth server
+unload the model other agents use is refused with `-32602` and
+`error.data = { code: "unsloth-model-switch-confirmation-required", currentModel,
+requestedModel, agents }` before any state change. Resend with
+`messageMetadata.confirmUnslothModelSwitch: true` after the user confirms
+([§5.5](./methods/agents.md)).
 
 ### Prepared provider profile errors
 

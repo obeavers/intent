@@ -171,6 +171,13 @@ optional `Workspace.autoArchiveDisabled` field, the `autoArchiveDisabled` param 
 have not opted out omit the field, so clients cannot detect support by presence; they offer
 the opt-out only for exact integer `1`, and older daemons omit it.
 
+**Script autoStart in place (behaviour change).** intentd advertises it from
+intent-hq/intentd#3549; the app's gate is intent-hq/cloudlands-fe#4809. Exactly integer
+`server.capabilities.scriptAutoStartInPlace: 1` says a `script.create` upsert that changes only
+`autoStart` keeps the script's live run ([§5.8](./scripts.md)). Clients may offer the
+auto-start toggle on a running script only for exact integer `1`; older daemons omit it and
+replace (stop) the run on any upsert.
+
 **Bounded reads (behaviour change).** Exactly integer `server.capabilities.boundedReads: 1`,
 also returned by `system.capabilities`, says the daemon answers read methods with bounded
 defaults: a default page size and a maximum where a method takes a limit, and a 480,000-byte
@@ -566,6 +573,9 @@ for REV-2 reverse-dispatch target selection (§5.9), the browser-tab registry (�
 per-workspace browser-client pin (§5.1 `workspace.setBrowserClient`) — [intent-hq/intentd#1756](https://github.com/intent-hq/intentd/pull/1756),
 [intent-hq/intentd#1760](https://github.com/intent-hq/intentd/pull/1760).
 
+- **`capabilities.backendRelay`** *(prepared, Assistant remote backends)*. A desktop app sets `1` when it
+  sends `backends.report` and serves the `backends.relayCall` reverse RPC. Only connections bound to the
+  host owner that advertise it are relay targets; see [Assistant remote backends](./agents.md#assistant-remote-backends-prepared).
 - **`capabilities.browserExec`.** A connection is **eligible** to serve daemon-initiated
   `browser.exec` reverse RPCs only once its hello advertised `capabilities.browserExec === true`.
   Un-hello'd sockets (CLIs, dev tooling, an iOS app that never sends hello) and connections

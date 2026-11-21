@@ -36,6 +36,8 @@ The largest namespace. Every `agent.*` method is served daemon-primary by `inten
 | agent.sendQueuedMessagesNow | agentId (req), workspaceId (req), messageIds (req, nonempty array of distinct nonempty strings) | `{ success: true, queued, messageIds, turnId?, quarantined? }`. Explicitly sends exactly the selected ready entries as one batch in existing queue order, with at most one keep-alive preemption. Validates the whole selection under the queue lock before dequeue or preemption: missing/stale/foreign IDs, duplicates, editing entries, unexpired holds, imported unbound human instructions and script-monitor wake entries (`messageMetadata.type: "script_monitor_wake"` with `monitorId` and without `remoteAgentId`; a [machine-run wake](./scripts.md#wakes-of-machine-run-monitors) is an ordinary entry) return `-32602` without sending any selected entry. Script-monitor wakes retain their individual monitor admission and lifecycle fence. Guest collaborators may select only entries visible in their `agent.getQueue`; original authorship, attachments and per-entry transcript rows are preserved. Unselected and later-arriving entries remain queued. `queued: false` carries the head entry’s `turnId`; all row echoes share it and precede the single shrunk `agent:queue:updated`, with one `agent:queue:processing` event. `queued: true` omits `turnId`: a startup/slot race restores the complete batch at the queue front; a partial transcript persistence failure parks the agent in Error and restores the batch in order, retaining entry IDs and skipping already-persisted rows on retry. Quarantine returns `queued: true, quarantined: true` without popping or preempting. `messageIds` always lists the selected IDs in queue order. A repeated request after delivery returns `-32602`; clients must refresh the queue rather than retry blindly. Requires the runtime agent manager; store-only configurations return unsupported without changing the queue. |
 | agent.dismissQuestions *(v2.8; model notice added within v4.3, intentd#892)* | agentId (req), messageId (req), workspaceId (req) | { success: true, dismissedQuestionsMessageId } — details below the table. |
 | agent.resolveProposal *(v8.7, [intentd#1581](https://github.com/intent-hq/intentd/pull/1581))* | agentId (req), proposalId (req), outcome (req: `"applied"` \| `"dismissed"`), detail?, workspaceId (req) | { success: true, proposalId, outcome } — details below the table. |
+| agent.resolveRpcProposal *(prepared, Assistant RPC)* | agentId (req), proposalId (req), decision (req: `"approve"` \| `"reject"`), workspaceId (req) | { success: true, proposalId, outcome, items, expired? } — owner only; details below the table. |
+| agent.rpcMethods *(prepared, Assistant RPC)* | workspaceId? | { count, methods: [{ method, class, summary, doc? }] } — this daemon's agent classes for `ws.rpc` (read). Lets another backend's Assistant read them through the relay. |
 | agent.markSeen *(v4.5)* | agentId (req), messageId (req), workspaceId (req) | { success: true, lastSeenMessageId } — details below the table. |
 | agent.editAndRegenerate | agentId (req), messageId (req), content (req), workspaceId (req), imageBlocks? *(stored block references with the capped-block-read capability)*, fileBlocks? *(attachment references only since v10.0; see the file-block contract on `agent.sendMessage`)*, model? | { success, queued: false, messageId, truncatedCount } — details below the table. |
 | agent.queueMessage | agentId (req), content (req), messageId? *(submission correlation v1, below)*, imageBlocks?, fileBlocks? *(attachment references only since v10.0; an inline-`data` entry is `-32602` naming the index BEFORE enqueueing — see the file-block contract on `agent.sendMessage`)*, messageMetadata?, workspaceId? | { success, queuedMessage, turnId } — details below the table. |
@@ -409,7 +411,10 @@ No method, event or error number is added; the method catalog is unchanged.
   `stdinContext` is prepended verbatim to the outbound prompt as a `Context:\n<stdin>\n\n---\n\n` block (reference-parity `acp-provider.ts`); when absent, one is synthesised from `contextReferences` (port of `agent-backend-handler.service.ts`’s builder — first-non-empty wins across `content` / `selectedText` / `taskText` / `codeChunk`, with per-`type` framing for `selection` / `task` / `code_chunk` / `file` / `linear-issue` / `github-issue` / `sentry-issue` / `terminal`; unknown types fall through to the raw content).
   `noteIds` attach notes **by reference** (within 13.0, behavior only — [intent-hq/intentd#2710](https://github.com/intent-hq/intentd/pull/2710)): for each distinct string id that resolves to a note in the current workspace, one text block is appended after the message's own content, image and file blocks (and before the one-shot auto-unarchive notice). The notice names the note's title and id — with `"` → `'`, `[`/`]` → `(`/`)` and control characters → spaces, so note text cannot forge a bracketed system marker — and directs the agent to `ws.note.read("<id>")` for its content. When workspace asset storage is configured (the root `note.saveAsset` / `note.readAsset` use), it also lists the note's distinct inline markdown image targets `![alt](workspace-asset://<workspaceId>/<assetId>)` in the current workspace (at most 50, with a count of the rest) to open on demand with `ws.note.readAsset(asset)` (passing the URL); HTML `<img>` and reference-style images are not scanned. An id that does not resolve (missing, deleted, or a store read error) is skipped without error, and a non-array `noteIds` or non-string entry is ignored, not `-32602`. No note image bytes are loaded or inlined: a note in context never counts against the provider image budget, which applies only to the image blocks carried by the turn's messages (`imageBlocks`, including those of queued or preempted messages delivered with it).
   `messageMetadata` is JSON persisted on the user message row (new `agent_message.metadata` column) and echoed on read — used by clients (e.g. `{ source: "system" }`) to distinguish daemon-initiated turns.
-  Non-reserved fields are opaque (never inspected by the daemon), but a few reserved fields ARE read or written daemon-side: `fromAgentId`/`fromAgentName` are daemon-stamped on agent-origin sends (the sender-attribution block below) and `userAppMessageId` is validated/folded by the router (the client-message-identity block below).
+  Non-reserved fields are opaque (never inspected by the daemon), but a few reserved fields ARE read or written daemon-side: `fromAgentId`/`fromAgentName` are daemon-stamped on agent-origin sends (the sender-attribution block below), `userAppMessageId` is validated/folded by the router (the client-message-identity block below), and `confirmUnslothModelSwitch` is consumed and never persisted (the Unsloth model switch block below).
+- **Unsloth model switch confirmation (within 18.0).**
+  The managed Unsloth server (§5.37) holds one model, and a turn for an `unsloth` agent on another model restarts it, so every other `unsloth` agent loses its model. A user-origin `agent.sendMessage` whose next turn would do that while other `unsloth` agents run on `currentModel` is refused before any state change with `-32602` and `error.data = { code: "unsloth-model-switch-confirmation-required", currentModel, requestedModel, agents: [{ agentId, agentName, workspaceId, workspaceTitle }] }` (`workspaceTitle` is `null` when the workspace row is gone; `agents` lists the live agents spawned on `currentModel`, excludes the sender and is sorted by `agentId`).
+  The refusal applies only when the daemon started the running server (an adopted server is never stopped by a switch), the target runs on this backend (a remote agent uses its machine's server), the target's base provider is `unsloth`, and its session `model` differs from `currentModel` (a live process is not exempt: a model, policy or recreation change respawns it). Resending with `messageMetadata.confirmUnslothModelSwitch: true` proceeds; the daemon removes that key before persisting (an object left empty is stored as no metadata). Automatic deliveries are never refused and keep the warning-level `agent:stream:status` notice at restart. Older daemons never refuse.
 - **File blocks (v6.12; attachment references only since v10.0 — [intent-hq/intentd#1878](https://github.com/intent-hq/intentd/pull/1878)).**
   Every `fileBlocks` entry is an attachment-registry reference `{ type: "file", attachmentId, fileName, mimeType?, size? }` (v6.12 registry, `file.placeAttachment` / `file.attachmentUpload.*`, §5.9) and must carry a non-empty `attachmentId`.
   The pre-10.0 inline arm (`{ type: "file", data, mimeType, fileName }`, exactly one of `data` / `attachmentId`) is removed outright: an entry carrying `data` — with or without a reference — is `-32602` naming the block index (`` {method}: fileBlocks[{i}] carries inline `data`; inline file data is no longer accepted — upload the file and reference it by `attachmentId` ``), and an entry with no non-empty `attachmentId` is `-32602` naming the index (`` {method}: fileBlocks[{i}] must carry a non-empty `attachmentId`; inline file data is no longer accepted ``), both BEFORE any state change and on every seam that accepts `fileBlocks` (`agent.sendMessage`, `agent.queueMessage`, `agent.editAndRegenerate`, `agent.create`, `agent.update`, `workspace.create`'s `initialAgent`).
@@ -526,6 +531,25 @@ No method, event or error number is added; the method catalog is unchanged.
   A re-proposed id re-enters the pending list as a fresh card and its earlier outcome (and created-workspace link) is dropped; its re-resolution records a new outcome and notice.
   Validation: the `proposalId` is matched VERBATIM against the recorded pending entries (recording preserves `applyToolCallId` / `preview.title` exactly as proposed, so no normalization); an empty/whitespace-only `proposalId` or one exceeding 256 bytes is `-32602`, an `outcome` other than the two literals is `-32602`, and `detail` is trimmed (empty collapses to absent) and capped at 2000 bytes (`-32602` past it — it is appended verbatim to the applied notice, so it is bounded against oversized payloads riding into the transcript).
   An id that was never pending and never resolved, a nonexistent `agentId`, or a workspace mismatch is a not-found error
+
+**`agent.resolveRpcProposal` details.**
+
+- Approves or rejects an Assistant `rpc-call` proposal (see "Assistant RPC proposals" below). Only a
+  connection bound to the host owner may call it (`-32003` otherwise, including every agent path); it is
+  on the agent-forbidden list, so the Assistant can never approve its own calls.
+- `decision: "approve"` runs the calls the daemon holds for this proposal, in order, as the owner, and
+  stops at the first failure. Each `items[]` entry is `{ index, backend, method, status, result?, error? }`
+  with `status` one of `done`, `failed`, `unknown` (no reply before the per-call timeout; it may have run)
+  or `skipped`. The proposal is then resolved `applied` exactly like `agent.resolveProposal`, and the
+  applied notice's detail carries a bounded per-call report (results are shortened to fit 12,000 bytes).
+- `decision: "reject"` runs nothing and resolves the proposal `dismissed` (`items: []`).
+- The held calls, not the transcript card, are what runs: a card that the daemon does not hold (for
+  example after a daemon restart) resolves `dismissed` with `expired: true` and runs nothing.
+- One approval run is bounded at 10 minutes and each call at 120 seconds; calls past the run bound are
+  `skipped`. Clients should wait at least 11 minutes for the reply.
+- A second approval while the calls run is `-32005` (`current.state: "running"`). An approval before the
+  proposing turn ended is `-32005` (`current.state: "turn-in-progress"`); retry after the turn ends.
+  An already resolved id echoes its outcome. An unknown id is a not-found error.
 
 **`agent.markSeen` details.**
 
@@ -2649,6 +2673,72 @@ Session-metadata tracking for the **proposal resource blocks** an agent's turns 
 - **Durability.** Writes are atomic single-key `json_set` updates (sibling metadata keys preserved), serialized per agent on the same mutation lock as the question markers. Best-effort: a persist failure is logged and never fails the turn.
 - **Resolution.** `agent.resolveProposal` (method table above) moves an entry out of the list into the `proposalResolutions` map (`proposalId -> "applied" | "dismissed"`, capped at 100 entries, oldest evicted) and notifies the model on both outcomes. A card Apply of a `workspace-create` proposal is resolved by the daemon itself when the client passes `workspace.create { origin: { kind: "proposal", agentId, proposalId } }` (see "Proposal origin" in [workspace.md](./workspace.md), [intent-hq/intent#8086](https://github.com/intent-hq/intent/issues/8086)): the create runs this path requesting `applied`, so the notice does not depend on the proposing conversation being open in any client. Such a create reports `proposalOrigin` on its result, and the client then skips its own post-apply call — which it keeps only for daemons that return no `proposalOrigin`. Besides the client-driven Apply, the proposing agent itself is a second resolver of its own pending list: on the user's explicit chat instruction, `ws.workspace.applyProposal` (MCP-only; see "Agent apply" in [workspace.md](./workspace.md)) creates the `workspace-create` proposal's workspace under the stored idempotency key and then calls this same path requesting `applied`, so the `agent:updated` emit and the `proposal_resolved` notice are identical to a card Apply. Because the resolver echoes an already-persisted outcome instead of rewriting it, a card resolution that landed from the UI while the create was in flight is kept and reported as the binding's `outcome`: a concurrent non-applied resolution (`dismissed`) comes back with the created workspace retained and a `resolveWarning` saying the workspace exists, while a concurrent UI `applied` comes back as `applied` with no warning. There is **no delivery hold**: unlike pending questions, pending proposals do not park automatic deliveries — the proposing agent keeps working.
 
+#### Assistant RPC proposals (`rpc-call`, prepared)
+
+The Assistant agent (top-level agent in the `__chief__` workspace only) has an MCP-only `ws.rpc` tool that
+calls any daemon JSON-RPC method as the owner through an in-process connection with UDS semantics.
+Each method has an agent class: `read` (runs at once), `mutating` (needs approval; unknown names too),
+`forbidden-to-agent` (refused even with approval: credential and access administration, including
+reads that return live invite links or stored OAuth records, anything that
+answers an approval, permission, question or secret request, `settings.update` / `settings.reset`, and
+owner surfaces with their own agent tools) or `unsupported-on-agent-path` (`client.hello`,
+subscriptions, `drafts.*`, presence and invite fast paths). The class comes from intentd's catalog and
+its golden `agent_rpc_classes.txt`.
+
+A mutating `ws.rpc.call` or any `ws.rpc.batch` does not run. The daemon holds the calls and the tool
+result carries a proposal resource block of kind `rpc-call`:
+
+```json
+{ "kind": "rpc-call", "applyToolCallId": "rpc-6f1c…",
+  "preview": { "title": "Archive stale workspaces", "summary": "On Studio, in order. Stops at the first failure.", "applyLabel": "Approve" },
+  "payload": { "operation": "rpc.call", "proposalId": "rpc-6f1c…",
+    "calls": [ { "index": 0, "backend": { "id": "local", "name": "Studio", "local": true },
+                 "method": "workspace.archive", "class": "mutating",
+                 "summary": "Archives a workspace.", "params": { "workspaceId": "ws-1" } } ] } }
+```
+
+It is recorded in `pendingProposals` like any proposal. Clients render every call with its backend,
+method, summary and full params, grouped by backend, and resolve it only with
+`agent.resolveRpcProposal`. `agent.resolveProposal` refuses `outcome: "applied"` for such an id
+(`-32602`, nothing runs); `dismissed` drops the held calls. A client that does not know the kind tells
+the user to approve on a desktop app. `ws.app.proposal.show` refuses this kind.
+
+#### Assistant remote backends (prepared)
+
+Owner desktop apps tell the daemon which other backends they hold credentials for; the daemon relays
+the Assistant's `ws.rpc` calls for those backends through one of those apps. The daemon never sees a token.
+
+**`backends.report`** (client→daemon fast-path method, owner-only; `-32003` for any other principal; needs a
+prior `client.hello`). Params `{ backends: [{ name, host, hosts?, port, fingerprint?, tcAddress?, connected?, daemonVersion? }] }`,
+the app's full list (it replaces that app's previous report). A report whose entries carry any key matching
+`token`, `secret`, `password` or `credential` (any case) is refused with `-32602` and nothing is stored.
+Result `{ accepted }`. The app sends it after `client.hello` and whenever its list or a backend's connection
+state changes. The daemon keeps one list per reporting `clientId` in memory with no expiry: it survives the
+app disconnecting and is lost only on daemon restart.
+
+Backend identity follows the [Keychain machine identity](../backend-keychain.md#payload-and-identity):
+`fp:<trimmed uppercase fingerprint>`, otherwise `addr:<trimmed lowercase host>:<port>`, otherwise
+`tc:<tcAddress>` for a tunnel-only entry. Entries from several apps with the same identity are one backend.
+The entry whose fingerprint equals this daemon's own certificate fingerprint is the local backend (`local`).
+
+**`backends.relayCall`** (daemon→client reverse RPC). Params `{ backendId, method, params, timeoutMs }`.
+The app resolves its stored connection for `backendId` by the same identity, calls `method` with its own
+credential, and replies `{ result }` or `{ error: { code, message, data? } }` (the remote daemon's error
+unchanged). The daemon sends it only to online owner connections whose hello advertised
+`capabilities.backendRelay: 1` and whose `clientId` reported the backend, preferring the most recently
+active one.
+
+**Agent path.** `ws.rpc.backends()` lists the merged backends from memory (no client round trip), each with
+its reporters (`{ clientId, device, online, lastSeenAt }`). `ws.rpc.call(method, params, { backend })` and
+batch items with `backend` relay as above. Classification follows the local daemon when it knows the method,
+otherwise the remote daemon's `agent.rpcMethods` class, otherwise mutating; remote mutations use the same
+`rpc-call` card, whose calls carry their backend. Before a card is shown, every remote backend in it must have
+an online relay. Relay failures use `data.code` `unknown-backend`, `no-relay-online` (the message names the
+reporting machines to open), `relay-disconnected` (the call may have run; a batch reports the item `unknown`
+and skips the rest), `relay-timeout`, and the app-reported `relay-unreachable` (the app could not
+reach the backend; nothing was sent) and `relay-outcome-unknown` (sent, but no reply; reported
+`unknown` like a disconnect).
+
 ```json
 // → resolve a pending proposal after the client-side Apply succeeded
 { "jsonrpc":"2.0","id":32,"method":"agent.resolveProposal",
@@ -2751,7 +2841,7 @@ Heavy block bodies follow the slim projection's previews and flags; read a whole
 
 #### Prompt breakdown
 
-*(Additive; recorded for harness 3.10, 3.12, 3.13 and 3.14.)* `agent.getSession` adds a
+*(Additive; recorded for harness 3.10, 3.12, 3.13, 3.14 and 3.15.)* `agent.getSession` adds a
 top-level `promptBreakdown` field: what Intent put into the agent's context, by section.
 It is served on `agent.getSession` only. `agent.get`, `agent.list` rows and the agent
 collection channel never carry it. Clients older than this field ignore it.
@@ -2801,7 +2891,7 @@ interface HiddenSkill {
    available" from an absent field:
    1. `harness-predates-breakdown`: the session's `harnessVersion` is not one the
       daemon admits. The daemon admits versions by name: 3.10 (eval-only), 3.12,
-      which releases the breakdown, and 3.13 and 3.14, which keep it. Released 3.11 only
+      which releases the breakdown, and 3.13, 3.14 and 3.15, which keep it. Released 3.11 only
       corrects visual guidance and records none. Each later version is admitted
       explicitly, so a client must not infer availability from a version number.
       The wire reason retains its original name. The daemon never computes a

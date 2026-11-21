@@ -607,6 +607,115 @@ class CallbackPreflightTests(unittest.TestCase):
                 self.assertFalse(gate.needs_callback_fixture(plans))
 
 
+INTENTD = SCRIPT.parents[1] / "packages/intentd"
+
+
+def callback_fixture_manifest():
+    # Loaded on use: test_default_bytecode_preflight_preserves_changed_plan_and_resume
+    # runs a copy of this module from a directory without its siblings.
+    path = SCRIPT.with_name("callback_fixture_manifest.py")
+    spec = importlib.util.spec_from_file_location("callback_fixture_manifest", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def copy_callback_scripts(component, entrypoints):
+    for relative in callback_fixture_manifest().component_files(INTENTD, entrypoints):
+        target = component / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy(INTENTD / relative, target)
+
+
+class CallbackFixtureManifestTests(unittest.TestCase):
+    """The intentd files the callback fixture tests copy are derived, not hand-kept.
+
+    intentd#3103 made prepare-acp-callback-fixture.py load a sibling
+    download_retry.py; the hand-kept copy list missed it, so four tests here
+    failed on every Linux x64 checkout with intentd while CI (no submodules)
+    skipped them.
+    """
+
+    def setUp(self):
+        self.manifest = callback_fixture_manifest()
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        self.component = Path(temp.name) / "intentd"
+        self.files({
+            "scripts/prepare-acp-callback-fixture.py": (
+                '_spec = importlib.util.spec_from_file_location(\n'
+                '    "download_retry", Path(__file__).with_name("download_retry.py"))\n'
+                '# Path(__file__).with_name("commented.py") is prose, not a load.\n'),
+            "scripts/download_retry.py": "DATA = Path(__file__).with_name( 'retry-data.json' )\n",
+            "scripts/retry-data.json": "{}\n",
+            "scripts/changed-tests.sh": 'policy=("$BASH" "$repo_root/scripts/with-test-policy.sh")\n',
+            "scripts/with-test-policy.sh": 'exec "$@"\n',
+            "scripts/test-prepare-acp-callback-fixture.py": (
+                'SPEC = Path(__file__).with_name("prepare-acp-callback-fixture.py")\n'
+                'HELPER = Path(__file__).with_name("test-only.py")\n'),
+            "scripts/test-only.py": "",
+            "scripts/commented.py": "",
+            "scripts/unrelated.py": "",
+        })
+
+    def files(self, files):
+        for relative, content in files.items():
+            path = self.component / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(content)
+
+    def test_copies_python_siblings_transitively(self):
+        self.assertEqual(self.manifest.component_files(self.component, self.manifest.PREPARE), [
+            "scripts/download_retry.py", "scripts/prepare-acp-callback-fixture.py",
+            "scripts/retry-data.json"])
+        self.assertEqual(self.manifest.component_files(self.component), [
+            "scripts/changed-tests.sh", "scripts/download_retry.py",
+            "scripts/prepare-acp-callback-fixture.py", "scripts/retry-data.json",
+            "scripts/with-test-policy.sh"])
+
+    def test_watch_list_adds_the_in_place_fixture_builder(self):
+        watched = self.manifest.watched_files(self.component)
+        for relative in ("scripts/test-prepare-acp-callback-fixture.py", "scripts/test-only.py",
+                         "scripts/download_retry.py", "scripts/changed-tests.sh"):
+            self.assertIn(relative, watched)
+        self.assertNotIn("scripts/commented.py", watched)
+        self.assertNotIn("scripts/unrelated.py", watched)
+
+    def test_deleted_but_loaded_sibling_stays_watched(self):
+        (self.component / "scripts/download_retry.py").unlink()
+        self.assertNotIn("scripts/download_retry.py", self.manifest.component_files(self.component))
+        self.assertIn("scripts/download_retry.py", self.manifest.watched_files(self.component))
+
+    def test_new_sibling_load_is_copied_and_watched(self):
+        self.files({"scripts/prepare-acp-callback-fixture.py":
+                    'X = Path(__file__).with_name("new_helper.py")\n',
+                    "scripts/new_helper.py": ""})
+        self.assertIn("scripts/new_helper.py", self.manifest.component_files(self.component))
+        self.assertIn("scripts/new_helper.py", self.manifest.watched_files(self.component))
+
+    def test_cli_prints_one_path_per_line(self):
+        script = str(SCRIPT.with_name("callback_fixture_manifest.py"))
+        for flag, expected in (((), self.manifest.component_files),
+                               (("--watched",), self.manifest.watched_files)):
+            with self.subTest(flag=flag):
+                result = subprocess.run([sys.executable, "-I", "-B", script,
+                                         "--component", str(self.component), *flag],
+                                        capture_output=True, text=True, timeout=20)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(result.stdout.splitlines(), expected(self.component))
+        result = subprocess.run([sys.executable, "-I", "-B", script,
+                                 "--component", str(self.component / "missing")],
+                                capture_output=True, text=True, timeout=20)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("is not a directory", result.stderr)
+
+    @unittest.skipUnless((INTENTD / "scripts/download_retry.py").is_file(),
+                         "the pinned intentd predates intentd#3103")
+    def test_pinned_component_copies_the_download_retry_sibling(self):
+        self.assertIn("scripts/download_retry.py",
+                      self.manifest.component_files(INTENTD, self.manifest.PREPARE))
+
+
 class CallbackValidatorTests(unittest.TestCase):
     """Exercise the component verifier with its own synthetic fixture builder."""
 
@@ -690,9 +799,7 @@ class CallbackValidatorTests(unittest.TestCase):
         # The child interpreter does not inherit the in-process platform mock.
         if self.host_machine not in ("x86_64", "amd64"):
             self.skipTest("canonical fixture CLI needs a Linux x64 host")
-        scripts = self.component / "scripts"
-        scripts.mkdir()
-        shutil.copy(SCRIPT.parents[1] / "packages/intentd/scripts/prepare-acp-callback-fixture.py", scripts)
+        copy_callback_scripts(self.component, callback_fixture_manifest().PREPARE)
         config = self.component / "crates/intent-acp/tests/fixtures"
         config.mkdir(parents=True)
         shutil.copy(self.fixture.descriptor_path, config / "claude-callback-adapter.json")
@@ -726,9 +833,7 @@ class CallbackValidatorTests(unittest.TestCase):
         if self.host_machine not in ("x86_64", "amd64"):
             self.skipTest("canonical fixture CLI needs a Linux x64 host")
         scripts = self.component / "scripts"
-        scripts.mkdir()
-        for name in ("prepare-acp-callback-fixture.py", "changed-tests.sh"):
-            shutil.copy(SCRIPT.parents[1] / "packages/intentd/scripts" / name, scripts)
+        copy_callback_scripts(self.component, callback_fixture_manifest().ENTRYPOINTS)
         config = self.component / "crates/intent-acp/tests/fixtures"
         config.mkdir(parents=True)
         shutil.copy(self.fixture.descriptor_path, config / "claude-callback-adapter.json")
@@ -1704,6 +1809,27 @@ class ResumableNextestTests(unittest.TestCase):
             self.assertNotIn("WARNING", stderr.getvalue())
             record_dir = root / "cache" / KEY / "changed" / gate.plan_key(gate.split_plans(["-p alpha --test one"]))
             self.assertFalse((record_dir / "complete").exists())
+
+    def test_empty_selection_fails_even_when_nextest_lets_it_pass(self):
+        # NEXTEST_NO_TESTS=pass (or a profile) relaxes nextest's empty-run
+        # failure; a selection that matched nothing must still fail, naming the
+        # FEATURES knob (the Postgres store tests are empty without
+        # intent-store/postgres).
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            harness = PlannedRunHarness(root, [([], 0)])
+            harness.listing = self._filtered_listing({
+                "unrelated": {"ignored": False, "filter-match": {"status": "mismatch", "reason": "expression"}},
+            })
+            stderr = io.StringIO()
+            with contextlib.redirect_stderr(stderr):
+                self.assertEqual(harness.execute(make_args(root)), 4)
+            self.assertIn("matched no tests", stderr.getvalue())
+            self.assertIn("FEATURES=intent-store/postgres", stderr.getvalue())
+            record_dir = root / "cache" / KEY / "changed" / gate.plan_key(gate.split_plans(["-p alpha --test one"]))
+            self.assertFalse((record_dir / "complete").exists())
+            run_record = json.loads((latest_attempt(record_dir) / "run.json").read_text())
+            self.assertEqual((run_record["exit_code"], run_record["results"][0]["exit_code"]), (4, 4))
 
     def test_filter_matching_nothing_fails_despite_ignored_tests(self):
         # Regression (intentd#2941): nextest reports every #[ignore] test as
@@ -3440,6 +3566,127 @@ class FilterSelectionTests(unittest.TestCase):
         self.assertEqual(gate.split_plans(args.plan), [["--workspace", "-E", self.EXPRESSION]])
         self.assertEqual(args.label, "test-select")
 
+    def test_features_join_the_one_workspace_plan(self):
+        for value, expected in (("intent-store/postgres", "intent-store/postgres"),
+                                (" intent-store/postgres,  alpha/x ", "intent-store/postgres,alpha/x"),
+                                ("a b", "a,b")):
+            with self.subTest(value=value):
+                args = self.parse("--label", "test-select", "--filterset", self.EXPRESSION, "--features", value)
+                self.assertEqual(gate.split_plans(args.plan),
+                                 [["--workspace", "--features", expected, "-E", self.EXPRESSION]])
+        args = self.parse("--filterset", self.EXPRESSION)
+        self.assertNotIn("--features", gate.split_plans(args.plan)[0])
+
+    def test_features_need_a_filterset_and_valid_names(self):
+        for argv, message in ((["--features", "intent-store/postgres"], "--features needs --filterset"),
+                              (["--filterset", "all()", "--features", "x'; touch pwned"], "Cargo features"),
+                              (["--filterset", "all()", "--features", " , "], "Cargo features"),
+                              (["--filterset", "all()", "--features=--all-features"], "Cargo features")):
+            with self.subTest(argv=argv), contextlib.redirect_stderr(io.StringIO()) as stderr:
+                with self.assertRaises(SystemExit) as refused:
+                    self.parse(*argv)
+                self.assertEqual(refused.exception.code, 2)
+                self.assertIn(message, stderr.getvalue())
+
+    def test_feature_builds_never_share_resume_credit_with_default_builds(self):
+        # Review of intent#9654: TREE/passed.jsonl is shared by every selection
+        # of a tree, so a FEATURES=intent-store/postgres pass credited a later
+        # default RESUME=1 run (and the reverse). Feature builds key a tree of
+        # their own.
+        featured = [gate.shlex.join(gate.filterset_selection("all()", "intent-store/postgres"))]
+
+        def keyed(*_args, features=None, **_kwargs):
+            return hashlib.sha256(json.dumps(features).encode()).hexdigest()
+
+        for first, second in ((featured, None), (None, featured)):
+            with self.subTest(first=first), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                with mock.patch.object(gate, "tree_key", side_effect=keyed), self.fixtures(root):
+                    passed = PlannedRunHarness(root, [([event("ok", "alpha::one$passes")], 0)])
+                    self.assertEqual(self.execute_with_real_key(
+                        passed, make_args(root, plan=first, label="test-select")), 0)
+                    resumed = PlannedRunHarness(root, [([event("ok", "alpha::one$passes")], 0)])
+                    self.assertEqual(self.execute_with_real_key(
+                        resumed, make_args(root, plan=second, resume="1", label="test-select")), 0)
+                self.assertEqual(len(resumed.run_commands), 1, "the pass was credited across feature sets")
+                self.assertNotIn("resumed: skipped", resumed.stdout.getvalue())
+                self.assertEqual(len(list((root / "cache").iterdir())), 2, "one tree per feature set")
+
+    @staticmethod
+    @contextlib.contextmanager
+    def fixtures(root):
+        environment = {k: v for k, v in os.environ.items() if k != "NODE_OPTIONS"}
+        with mock.patch.dict(os.environ, environment, clear=True), \
+                mock.patch.object(gate, "callback_fixture_identity",
+                                  return_value={"root": str(root / "callback"), "manifest": "verified"}), \
+                mock.patch.object(gate, "transfer_fixture_identity", return_value={"root": str(root / "transfer")}):
+            yield
+
+    @staticmethod
+    def execute_with_real_key(harness, args):
+        """PlannedRunHarness.execute without its fixed tree key."""
+        harness.selection_index = 0
+        with mock.patch.object(gate, "apply_storage_policy"), mock.patch.object(
+                gate, "run", side_effect=harness.fake_run), mock.patch.object(
+                gate.subprocess, "Popen", side_effect=harness.fake_popen), \
+                contextlib.redirect_stdout(harness.stdout):
+            return gate.run_nextest(args)
+
+    def test_selection_features_normalize_every_cargo_spelling(self):
+        self.assertEqual(gate.selection_features([["--workspace", "-E", "all()"]]), [])
+        self.assertEqual(gate.selection_features([["--features", "b,a"], ["-F", "a"], ["--features=c d"],
+                                                  ["-Fe"], ["--all-features", "--no-default-features"]]),
+                         ["--all-features", "--no-default-features",
+                          "feature:a", "feature:b", "feature:c", "feature:d", "feature:e"])
+
+    def test_features_join_the_tree_key_only_when_present(self):
+        with tempfile.TemporaryDirectory() as temporary, \
+                mock.patch.object(gate, "worktree_tree", return_value="tree"), \
+                mock.patch.object(gate, "submodule_heads", return_value=[]), \
+                mock.patch.object(gate, "required_hash", return_value="hash"), \
+                mock.patch.object(gate, "run", return_value="version"):
+            root = Path(temporary)
+            plain = gate.tree_inputs(root, root, child_env={})
+            self.assertNotIn("cargo-features", plain, "default records keep their existing keys")
+            self.assertEqual(gate.tree_inputs(root, root, child_env={}, features=[]), plain)
+            featured = gate.tree_inputs(root, root, child_env={}, features=["feature:intent-store/postgres"])
+            self.assertEqual(featured["cargo-features"], ["feature:intent-store/postgres"])
+
+    def test_filter_selecting_only_ignored_tests_fails_test_select(self):
+        # test-changed keeps the skipped-only warning (a changed crate may hold
+        # only #[ignore] tests); a named test-select selection must run something.
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            harness = PlannedRunHarness(root, [([], 4)])
+            harness.listing = json.dumps({"rust-suites": {"alpha::one": {
+                "package-name": "alpha", "binary-name": "one", "binary-id": "alpha::one",
+                "testcases": {"skipped": {"ignored": True,
+                                         "filter-match": {"status": "mismatch", "reason": "ignored"}}}}}})
+            plans = [gate.shlex.join(gate.filterset_selection("test(=skipped)"))]
+            args = make_args(root, plan=plans, label="test-select", require_runnable=True)
+            stderr = io.StringIO()
+            with contextlib.redirect_stderr(stderr), self.fixtures(root):
+                self.assertEqual(harness.execute(args), 4)
+            self.assertNotIn("--no-tests", harness.run_commands[0])
+            self.assertIn("matched only skipped/ignored tests (1), so nothing ran", stderr.getvalue())
+            # Even when nextest is told to let an empty run pass.
+            harness = PlannedRunHarness(root, [([], 0)])
+            harness.listing = json.dumps({"rust-suites": {"alpha::one": {
+                "package-name": "alpha", "binary-name": "one", "binary-id": "alpha::one",
+                "testcases": {"skipped": {"ignored": True,
+                                         "filter-match": {"status": "mismatch", "reason": "ignored"}}}}}})
+            with contextlib.redirect_stderr(io.StringIO()), self.fixtures(root):
+                self.assertEqual(harness.execute(args), 4)
+
+    def test_filterset_requires_a_runnable_test_and_plans_do_not(self):
+        self.assertTrue(self.parse("--filterset", "all()").require_runnable)
+        with mock.patch.object(sys, "argv", ["resumable_nextest.py", "--repo-root", ".",
+                                             "--intentd-dir", "intentd", "--cache-dir", "cache",
+                                             "--build-jobs", "1", "--test-threads", "1", "--plan", "-p a"]), \
+                mock.patch.object(gate, "run_nextest", return_value=0) as run:
+            gate.main()
+        self.assertFalse(run.call_args.args[0].require_runnable)
+
     def test_filterset_refuses_plan_and_blank_expression(self):
         for argv in (["--filterset", "all()", "--plan", "-p alpha"], ["--filterset", ""],
                      ["--filterset", "  "]):
@@ -4988,6 +5235,12 @@ class StaleExecutableTests(unittest.TestCase):
         self.assertTrue(gate.whole_workspace([["--workspace", "-E", "test(x)"]]))
         self.assertFalse(gate.whole_workspace([["--workspace", "-p", "alpha"]]))
         self.assertFalse(gate.whole_workspace([["--workspace"], ["--package=alpha", "--workspace"]]))
+        # Extra features build other executables: keep the default build's copies.
+        for selection in (["--workspace", "--features", "a/b", "-E", "all()"],
+                          ["--workspace", "--features=a/b"], ["--workspace", "-F", "a/b"],
+                          ["--workspace", "--all-features"]):
+            with self.subTest(selection=selection):
+                self.assertFalse(gate.whole_workspace([selection]))
 
     def test_pruning_failure_or_interrupt_never_changes_the_recorded_run(self):
         for failure in (RuntimeError("symlink loop"), KeyboardInterrupt(), gate.Terminated("SIGTERM")):

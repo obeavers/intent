@@ -370,7 +370,9 @@ next time such a definition is saved through `script.create`.
 > stops the daemon and kills every running script, and boot hydration previously loaded all
 > persisted definitions as plain `idle` — so clients could not tell which scripts were live
 > before the shutdown. The daemon persists a was-running marker on the script row
-> (stored-on-write) and surfaces it **by mode**: a `service` row hydrates as `idle` with the
+> (stored-on-write). A marked `service` is started again at boot (see *Restores marked
+> services at boot* below); the marker is surfaced **by mode** when it is not consumed: a
+> `service` row whose restore fails hydrates as `idle` with the
 > optional `previouslyRunning: true` field on `ScriptRuntimeState` — served by
 > `script.status`, the runtime part of `script.list` entries, and `script:state` events
 > (§6.5) — and a `command` row (new in intentd, unreleased) hydrates as `exited` + `exitCode: -1` +
@@ -384,12 +386,28 @@ next time such a definition is saved through `script.create`.
 > - **Set by every successful start/restart**, in both modes (new in intentd, unreleased —
 >   previously `service`-mode only). `previouslyRunning` stays service-only on the wire.
 > - **Cleared** on a user `script.stop`, on natural exit, and on `script.remove` (the row goes
->   with it); a `script.create` upsert resets it. Starting a marked script clears it — the
+>   with it); a `script.create` upsert resets it, except an `autoStart`-only upsert (below). Starting a marked script clears it — the
 >   hydrated `previouslyRunning` (or `lost` reading) drops as the state flips to `running`
 >   (an auto-restart's respawn re-sets the marker).
-> - **Survives repeated daemon restarts** untouched: a marked service row keeps hydrating as
->   `idle` with `previouslyRunning: true`, and a marked command row as `exited` / `-1` /
->   `lost`, until the script is started or explicitly stopped.
+> - **An `autoStart`-only upsert keeps the run** (new in intentd, unreleased; advertised as
+>   `server.capabilities.scriptAutoStartInPlace: 1`, see [client.hello](./client-hello.md)): a
+>   `script.create` upsert whose definition differs from the stored one only in
+>   `autoStart` updates it in place. A live run, its marker and `lastRun` are kept, and
+>   `script:changed` reports `updated`. An empty `env` and an empty or `"."` `cwd` count as
+>   unset. Any other difference still replaces the run.
+> - **Restores marked services at boot** (new in intentd, unreleased): every marked,
+>   unarchived `service` row in an unarchived workspace starts again, whatever its
+>   `autoStart`. Only a failed restore leaves it `idle` with `previouslyRunning: true`.
+>   Command rows are never re-run. A saved `autoStart` service in an unarchived workspace
+>   also starts at boot, even when it was not running (a user stop does not prevent it).
+>   This includes `autoStart` rows seeded from the repository's `.intent/config.json`.
+>   In a workspace whose scripts run on a home, only marked services restart at boot; its
+>   other `autoStart` scripts start when the home's checkout finishes setup. A stop,
+>   `autoStart` toggle-off or archive that lands before the boot start wins.
+> - **Survives repeated daemon restarts** untouched while unconsumed: a service whose
+>   restore fails keeps hydrating as `idle` with `previouslyRunning: true`, and a marked
+>   command row as `exited` / `-1` / `lost`, until the script is started or explicitly
+>   stopped.
 > - **Dismiss:** `script.stop` on a non-running script that carries the marker clears it —
 >   in memory and, via the same best-effort persist as every other transition, on the row —
 >   and returns ok (instead of erroring), and **emits a `script:state` event** carrying the
@@ -625,6 +643,51 @@ For a command with `autoStart: true`, keep that explicit saved purpose. For an
 upsert, add the existing `scriptId` and omit purpose only to retain its stored
 classification. These examples create definitions, not a successful test result.
 The generated MCP index remains pin-owned and is not edited for this preparation.
+
+#### autoStart: runs while the workspace is active
+
+*(new in intentd, unreleased; behavior only, no wire-shape change.)* A saved,
+unarchived script with `autoStart: true` (from `script.create` or the repository's
+`.intent/config.json` `scripts`) gets its home run started by the daemon, as an
+internal `script.start`, when the workspace becomes active with a ready checkout:
+
+| Trigger | Starts autoStart scripts |
+|---|---|
+| Local `workspace.create` setup stage ends `completed` (script exited `0`) or `skipped` (no effective script, `skipIsolation`/`skipWorktree`, plain-folder workspace) | Yes, after `workspace:setup:completed` |
+| Setup stage ends `failed` | No |
+| The workspace's [home](./nodes.md#workspace-homes) finishes its setup, or a home move to a set-up home | Yes (unchanged); the local setup stage of a workspace with a machine or cloud home starts nothing |
+| `workspace.unarchive`, `workspace.restore` or turn-start auto-unarchive that flips the row Archived → Active | Yes, after the `workspace:updated` delta; an unarchive of an already Active row starts nothing |
+| Revive of a Retired workspace | No: its fresh checkout never ran setup |
+| `workspace.archive` (manual or auto-archive) | No: archive **stops** every running script of the workspace (below) |
+| Daemon boot | Yes, in an active workspace without a machine home, even after a user stop: see *Restores marked services at boot* under *Was-running marker*, the one boot policy |
+
+Rules:
+
+- Every daemon start (an `autoStart` trigger or the boot restore) re-reads the
+  workspace under the script's definition lock, just before launch: nothing starts
+  in an archived, retired or deleted workspace, or one in a `workspace.delete` grace
+  window. A daemon start racing an archive either launches before the archive commits
+  (and the archive then stops it) or launches nothing.
+- `start` stays idempotent: a script already `starting`, `running` or `restarting`
+  is left as it is, so overlapping triggers never double-start.
+- A user `script.stop` holds until the next trigger above (setup finish, unarchive
+  or daemon boot); turn `autoStart` off to keep a script stopped.
+- **Archive stops scripts.** After the archived row is persisted, and before the
+  repository archive script runs, the daemon stops each running or launching home
+  run with `script.stop` semantics: a command's `lastRun` is `cancelled` with
+  `error` `cancelled by workspace archive`, and the was-running marker is cleared.
+  Boot starts no script of an archived workspace, even when a marker survives (a
+  daemon stop mid-archive, a failed stop). Each script's stop first re-checks that
+  the row is still archived; once an unarchive has flipped it, the remaining
+  scripts are left running (an `autoStart` script stopped just before the flip is
+  started again by the unarchive). Then each live machine run of a remote agent
+  (`machineRuns`) is stopped as `script.stop` with `remoteAgentId` stops it, under
+  the same re-check: its entry stays with `runtime.status` `idle`. A machine that
+  does not acknowledge the stop within the bounded wait is logged and its run is
+  settled on the daemon; the archive does not fail. A client may still start a
+  script in an archived workspace.
+- Starts are best-effort: a failed start is logged and never fails the triggering
+  call, and one failure does not keep other scripts from starting.
 
 #### Saved scripts and one-off history (protocol-13 baseline)
 
@@ -1169,6 +1232,12 @@ live machine run of the script (`scriptStop` to each machine), settles each
 unfinished one as `cancelled` with an error naming the replacement or removal,
 exactly as for the home run, and drops all `machineRuns` entries. Later starts
 use the new definition. Archive and restore change no run.
+
+**Archiving the workspace.** `workspace.archive` stops every live machine run of
+the workspace as the app's `script.stop({ remoteAgentId })` does, while the row
+is still archived (see "Archive stops scripts" under
+[`autoStart`](#autostart-runs-while-the-workspace-is-active)). Ended runs keep their
+entries and `lastRun`.
 
 A machine run follows the usual runtime contract: `starting` before the
 `script.start` reply, `running` when the machine reports the process (`pid` is

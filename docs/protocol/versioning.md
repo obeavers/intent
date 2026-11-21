@@ -25,6 +25,13 @@ apps hide it against an 18.0 daemon. No store migration. The documented surface 
 **497 / 443 / 54** (dispatchable / router / fast path), four fast-path methods fewer, and
 the reverse-RPC list drops to five names.
 
+Also within 18.0 (additive refusal and reserved metadata key, no version bump):
+**Unsloth model switch confirmation**. A user-origin `agent.sendMessage` that would make
+the managed Unsloth server unload the model other local agents run on is refused with `-32602`
+`unsloth-model-switch-confirmation-required`, naming those agents; a resend with
+`messageMetadata.confirmUnslothModelSwitch: true` proceeds
+([§5.5](./methods/agents.md)). Older daemons never refuse, so clients need no gate.
+
 Also within 18.0 (additive event field, no version bump): **clone download counters**.
 `git:clone:progress` `receiving` frames carry an optional `transfer { receivedObjects,
 totalObjects, receivedBytes?, bytesPerSecond? }` parsed from git's progress line, and a
@@ -1447,6 +1454,28 @@ relaunches the agents with the disk resume notice, as on Northflank. The
 backend advertises Agent37 only by listing it in `providerKinds`, which
 needs `cloudMachineProviders: 1`; no flag is added. Clients that do not know
 `"agent37"` skip its entries and show its machine rows without provider
+details, as for any unknown kind. No method or event is added or renamed, so
+the method and event catalogs and the surface counts are unchanged, and no
+`AgentLite` or `Workspace` field is added. The public protocol version is
+unchanged.
+
+**Vercel cloud machines — `"vercel"` in `providerKinds` (additive).**
+`CloudProviderKind` adds `"vercel"`, so an entry's `provider` (and
+`cloud.provider`, and `provider` on the three cloud error datas) can be
+`"vercel"`. A [Vercel entry](./methods/nodes.md#cloud-machines-on-vercel)
+starts one persistent Vercel Sandbox per sandbox, in the entry's team and
+project, from the Intent node image that Intent publishes to a public Vercel
+Container Registry repository (or the entry's `image`). New optional members:
+`cloudMachines.configure` `provider: "vercel"` and the Vercel-only `teamId`,
+`projectId` and `image` (`apiKey` and `apiKeyFrom` carry the Vercel access
+token); `CloudMachineProvider.vercel` (`teamId`, `projectId`, `image`). Vercel
+entries offer the existing sizes `"2x4"`, `"4x8"` and `"8x16"`; no size or
+error reason is added. A Vercel machine pauses with a stop that keeps only the
+disk, so every resume relaunches the agents with the disk resume notice, as on
+Northflank; the backend also stops and resumes it at the plan's session cap.
+The backend advertises Vercel only by listing it in `providerKinds`, which
+needs `cloudMachineProviders: 1`; no flag is added. Clients that do not know
+`"vercel"` skip its entries and show its machine rows without provider
 details, as for any unknown kind. No method or event is added or renamed, so
 the method and event catalogs and the surface counts are unchanged, and no
 `AgentLite` or `Workspace` field is added. The public protocol version is
